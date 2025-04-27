@@ -10,8 +10,7 @@ import useUpsertUser from "@/hooks/useUpsertUser";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { getColor } from "@/lib/getColor";
 import { useSession } from "@clerk/clerk-expo";
-import { useSetAtom } from "jotai";
-import { authTokenAtom } from "@/store/authToken.atom";
+import { useAuthToken } from "@/store/authToken.atom";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -41,7 +40,7 @@ const errorTranslations: Record<string, string> = {
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const { session } = useSession();
-  const setAuthToken = useSetAtom(authTokenAtom);
+  const [, setAuthToken] = useAuthToken();
   const [isPending, setPending] = useState(false);
   const router = useRouter();
 

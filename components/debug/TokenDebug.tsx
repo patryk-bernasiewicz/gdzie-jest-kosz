@@ -1,4 +1,4 @@
-import { authTokenAtom } from "@/store/authToken.atom";
+import { useAuthToken } from "@/store/authToken.atom";
 import { useAtomValue } from "jotai";
 import { View } from "react-native";
 import Text from "@/components/ui/Text";
@@ -6,7 +6,7 @@ import { getColor } from "@/lib/getColor";
 import useDevMode from "@/hooks/useDevMode";
 
 export default function TokenDebug() {
-  const token = useAtomValue(authTokenAtom);
+  const [token] = useAuthToken();
   const isDevMode = useDevMode();
 
   if (!isDevMode) {

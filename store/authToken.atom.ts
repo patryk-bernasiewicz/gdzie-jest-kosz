@@ -1,3 +1,14 @@
-import { atom } from "jotai";
+import { atom, useAtom } from "jotai";
 
-export const authTokenAtom = atom<string | null>(null);
+const baseAuthTokenAtom = atom<string | null>(null);
+
+export const authTokenAtom = atom(
+  (get) => get(baseAuthTokenAtom),
+  (_get, set, newToken: string | null) => {
+    set(baseAuthTokenAtom, newToken);
+  }
+);
+
+export const useAuthToken = () => {
+  return useAtom(authTokenAtom);
+};

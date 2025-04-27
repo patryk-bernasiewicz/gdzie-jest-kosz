@@ -8,8 +8,7 @@ import TouchableOpacityButton from "@/components/ui/TouchableOpacityButton";
 import Text from "@/components/ui/Text";
 import { getColor } from "@/lib/getColor";
 import Toast from "react-native-toast-message";
-import { useSetAtom } from "jotai";
-import { authTokenAtom } from "@/store/authToken.atom";
+import { useAuthToken } from "@/store/authToken.atom";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const { session } = useSession();
-  const setAuthToken = useSetAtom(authTokenAtom);
+  const [, setAuthToken] = useAuthToken();
 
   const [isPending, setPending] = useState(false);
   const router = useRouter();

@@ -1,6 +1,5 @@
 import axios from "axios";
-import { getDefaultStore } from "jotai";
-import { authTokenAtom } from "@/store/authToken.atom";
+import { fetchAndSetClerkToken } from "@/store/clerkToken.util";
 
 const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
@@ -10,7 +9,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  const token = getDefaultStore().get(authTokenAtom);
+  const token = await fetchAndSetClerkToken();
   if (token) {
     config.headers = config.headers || {};
     config.headers["Authorization"] = `Bearer ${token}`;

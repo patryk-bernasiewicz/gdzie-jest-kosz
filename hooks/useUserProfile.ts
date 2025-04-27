@@ -9,10 +9,15 @@ export default function useUserProfile() {
   return useQuery<User>({
     queryKey: ["userProfile"],
     queryFn: async () => {
-      const response = await api.get("/user/me");
-      return response.data;
+      try {
+        const response = await api.get("/user/me");
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        throw error;
+      }
     },
-    enabled: !!user,
+    enabled: Boolean(user),
     refetchInterval: 1000 * 60 * 15,
   });
 }

@@ -20,6 +20,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+// @ts-ignore
+window.navigator.onLine = true;
+
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
@@ -39,8 +42,8 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ClerkProvider tokenCache={tokenCache} localization={plPL}>
+    <ClerkProvider tokenCache={tokenCache} localization={plPL}>
+      <QueryClientProvider client={queryClient}>
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
@@ -51,7 +54,7 @@ export default function RootLayout() {
           <StatusBar style="auto" />
           <Toast />
         </ThemeProvider>
-      </ClerkProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </ClerkProvider>
   );
 }
