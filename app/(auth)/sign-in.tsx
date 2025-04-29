@@ -72,7 +72,7 @@ export default function Page() {
       console.error(JSON.stringify(err, null, 2));
 
       if (isClerkRuntimeError(err) && err.code === "network_error") {
-        console.error("Network error occured!");
+        console.error("Network error occurred!");
         Toast.show({
           type: "error",
           text1: "Błąd sieci",
