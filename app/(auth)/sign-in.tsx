@@ -1,4 +1,4 @@
-import { useSession, useSignIn } from "@clerk/clerk-expo";
+import { isClerkRuntimeError, useSession, useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -70,11 +70,22 @@ export default function Page() {
       }
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
-      Toast.show({
-        type: "error",
-        text1: "Nie można zalogować",
-        text2: (err as Error).message ?? "Sprawdź poprawność danych logowania",
-      });
+
+      if (isClerkRuntimeError(err) && err.code === "network_error") {
+        console.error("Network error occured!");
+        Toast.show({
+          type: "error",
+          text1: "Błąd sieci",
+          text2: err.message ?? "Sprawdź połączenie z internetem",
+        });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Nie można zalogować",
+          text2:
+            (err as Error).message ?? "Sprawdź poprawność danych logowania",
+        });
+      }
     } finally {
       setPending(false);
     }
