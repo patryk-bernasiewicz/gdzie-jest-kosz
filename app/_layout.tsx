@@ -21,6 +21,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+// Clerk workaround for muting network requests in non-browser environments.
+// TODO: Verify if this is still relevant and necessary.
 // @ts-ignore
 window.navigator.onLine = true;
 
