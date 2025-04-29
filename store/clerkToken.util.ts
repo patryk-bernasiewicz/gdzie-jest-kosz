@@ -9,12 +9,6 @@ const TOKEN_CACHE_TTL = 30 * 1000;
 async function getCachedClerkToken(): Promise<string | null> {
   const now = Date.now();
   if (cachedToken && cachedAt && now - cachedAt < TOKEN_CACHE_TTL) {
-    console.log("GOT CACHED TOKEN", {
-      now,
-      cachedAt,
-      "now - cachedAt": now - cachedAt,
-      cachedToken,
-    });
     return cachedToken;
   }
   return null;
@@ -24,8 +18,6 @@ export async function fetchAndSetClerkToken() {
   const clerkInstance = getClerkInstance();
 
   try {
-    const now = new Date().toISOString().replace("T", " ").substring(0, 19);
-
     let token: string | null;
     token = await getCachedClerkToken();
     if (!token) {
