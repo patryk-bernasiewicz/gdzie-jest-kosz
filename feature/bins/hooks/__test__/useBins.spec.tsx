@@ -2,13 +2,23 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react-native';
 import { type ReactNode } from 'react';
 
+import api from '@/lib/api';
+
 import useLocation from '../../../map/hooks/useLocation';
 import useBins from '../useBins';
 
-// Mock useLocation
-jest.mock('../useLocation', () => ({
+// Mock useLocation (correct path)
+jest.mock('../../../map/hooks/useLocation', () => ({
   __esModule: true,
   default: jest.fn(),
+}));
+
+// Mock api (Axios instance)
+jest.mock('@/lib/api', () => ({
+  __esModule: true,
+  default: {
+    get: jest.fn(),
+  },
 }));
 
 // Helper to mock useLocation's new return type
@@ -75,16 +85,15 @@ describe('useBins', () => {
   it('fetches bins if location is available', async () => {
     mockUseLocation({ location: [52.1, 21.0] });
 
-    global.fetch = jest.fn().mockResolvedValueOnce({
-      ok: true,
-      json: async () => [{ id: 1, latitude: 52.1, longitude: 21.0 }],
+    (api.get as jest.Mock).mockResolvedValueOnce({
+      data: [{ id: 1, latitude: 52.1, longitude: 21.0 }],
     });
 
     const { result } = renderHook(() => useBins(), { wrapper });
 
     await waitFor(() => expect(result.current.data).toBeDefined());
     expect(result.current.data).toEqual([{ id: 1, latitude: 52.1, longitude: 21.0 }]);
-    expect(global.fetch).toHaveBeenCalledWith(
+    expect(api.get).toHaveBeenCalledWith(
       expect.stringContaining(`/bins/?latitude=52.1&longitude=21`)
     );
   });
@@ -92,11 +101,7 @@ describe('useBins', () => {
   it('handles fetch errors gracefully', async () => {
     mockUseLocation({ location: [52.1, 21.0] });
 
-    const fetchTemp = global.fetch;
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: jest.fn().mockResolvedValue({}),
-    });
+    (api.get as jest.Mock).mockRejectedValueOnce(new Error('Network response was not ok'));
 
     const { result } = renderHook(() => useBins(), { wrapper });
 
@@ -108,8 +113,6 @@ describe('useBins', () => {
     );
     expect(result.current.error).toBeInstanceOf(Error);
     expect(result.current.error?.message).toBe('Network response was not ok');
-
-    global.fetch = fetchTemp; // Restore the original fetch function
   });
 
   it('does not fetch if binsUrl is null', async () => {

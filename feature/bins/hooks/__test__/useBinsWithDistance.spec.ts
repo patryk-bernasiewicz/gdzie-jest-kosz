@@ -4,7 +4,8 @@ import useLocation from '../../../map/hooks/useLocation';
 import { Bin } from '../../types';
 import useBinsWithDistance from '../useBinsWithDistance';
 
-jest.mock('../useLocation', () => ({
+// Mock useLocation (correct path)
+jest.mock('../../../map/hooks/useLocation', () => ({
   __esModule: true,
   default: jest.fn(),
 }));

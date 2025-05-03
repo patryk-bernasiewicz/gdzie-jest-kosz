@@ -23,25 +23,31 @@ export default function useNearestBin(bins?: BinWithDistance[] | null): {
     const [latitude, longitude] = location;
     const { latitude: binLat, longitude: binLng } = nearestBin;
 
+    // If the bin and user are at the same coordinates, return 'here'
+    if (latitude === binLat && longitude === binLng) {
+      return 'here';
+    }
+
     const deltaLng = binLng - longitude;
     const deltaLat = binLat - latitude;
-    const angleRadians = Math.atan2(deltaLat, deltaLng);
+    // Use atan2(deltaLng, deltaLat) so 0° is north
+    const angleRadians = Math.atan2(deltaLng, deltaLat);
 
     let angleDegrees = angleRadians * (180 / Math.PI);
     if (angleDegrees < 0) angleDegrees += 360;
 
     const directions: WorldDirection[] = [
-      'east',
-      'northeast',
       'north',
-      'northwest',
-      'west',
-      'southwest',
-      'south',
+      'northeast',
+      'east',
       'southeast',
+      'south',
+      'southwest',
+      'west',
+      'northwest',
     ];
 
-    const index = Math.round(((angleDegrees + 22.5) % 360) / 45) % 8;
+    const index = Math.floor(((angleDegrees + 22.5) % 360) / 45) % 8;
     const direction = directions[index];
 
     return direction as WorldDirection;

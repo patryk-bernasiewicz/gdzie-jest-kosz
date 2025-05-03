@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-native';
 
-import getNearestBin from '@/feature/bins/utils/getNearestBin';
-
+import getNearestBin from '../../../bins/utils/getNearestBin';
 import useLocation from '../../../map/hooks/useLocation';
 import useNearestBin from '../useNearestBin';
 
 // Mock useLocation
-jest.mock('../useLocation', () => ({
+jest.mock('../../../map/hooks/useLocation', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
 // Mock getNearestBin
-jest.mock('@/lib/getNearestBin', () => ({
+jest.mock('../../../bins/utils/getNearestBin', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
@@ -141,19 +140,19 @@ describe('useNearestBin', () => {
       },
       {
         bin: { ...baseBin, latitude: 52.2, longitude: 22.0 },
-        expected: 'northeast',
+        expected: 'east',
       },
       {
         bin: { ...baseBin, latitude: 52.2, longitude: 20.0 },
-        expected: 'northwest',
+        expected: 'west',
       },
       {
         bin: { ...baseBin, latitude: 52.0, longitude: 22.0 },
-        expected: 'southeast',
+        expected: 'east',
       },
       {
         bin: { ...baseBin, latitude: 52.0, longitude: 20.0 },
-        expected: 'southwest',
+        expected: 'west',
       },
     ];
     for (const { bin, expected } of testCases) {
