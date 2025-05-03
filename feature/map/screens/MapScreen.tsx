@@ -5,7 +5,7 @@ import useLocation from '@/feature/map/hooks/useLocation';
 import LeafletMap from '@/feature/user/components/LeafletMap';
 import DebugUserLocation from '@/feature/user/components/debug/DebugUserLocation';
 import useUserProfile from '@/feature/user/hooks/useUserProfile';
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 export default function MapScreen() {
   const { location } = useLocation();

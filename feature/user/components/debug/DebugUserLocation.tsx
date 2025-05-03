@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import useLocation from '@/feature/map/hooks/useLocation';
 import Text from '@/ui/components/Text';
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 export default function DebugUserLocation() {
   const { location } = useLocation();

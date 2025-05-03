@@ -9,7 +9,7 @@ import Heading from '@/ui/components/Heading';
 import Text from '@/ui/components/Text';
 import TouchableOpacityButton from '@/ui/components/TouchableOpacityButton';
 import TextInput from '@/ui/components/input/TextInput';
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 export default function SignInScreen() {
   const { signIn, setActive, isLoaded } = useSignIn();

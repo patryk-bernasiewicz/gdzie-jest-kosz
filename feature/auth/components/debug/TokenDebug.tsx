@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 
 import { useAuthToken } from '@/feature/auth/store/authToken.atom';
-import useDevMode from '@/hooks/useDevMode';
 import Text from '@/ui/components/Text';
-import { getColor } from '@/ui/utils/getColor';
+import useDevMode from '@/ui/hooks/useDevMode';
+import getColor from '@/ui/utils/getColor';
 
 export default function TokenDebug() {
   const [token] = useAuthToken();

@@ -23,7 +23,7 @@ type LeafletMapProps = {
 
 const logsDisabled = false;
 
-function LeafletMap({ latitude, longitude }: LeafletMapProps) {
+export default function LeafletMap({ latitude, longitude }: LeafletMapProps) {
   const mapViewRef = useRef<WebView>(null);
   const bins = useBins();
 
@@ -222,5 +222,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-export default LeafletMap;

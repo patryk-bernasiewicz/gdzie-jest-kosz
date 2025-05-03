@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { BinWithDistance } from '@/feature/bins/types/BinWithDistance';
 import { WorldDirection } from '@/types/WorldDirection';
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 import Text from '../../../ui/components/Text';
 

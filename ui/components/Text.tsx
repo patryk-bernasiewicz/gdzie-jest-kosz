@@ -1,7 +1,7 @@
 import { type ComponentProps } from 'react';
 import { Text as RNText, StyleSheet } from 'react-native';
 
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 const styles = StyleSheet.create({
   text: {

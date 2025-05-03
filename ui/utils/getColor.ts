@@ -30,10 +30,10 @@ const darkPalette = {
 
 export type PaletteKey = keyof typeof lightPalette;
 
-export const getColor = (key: PaletteKey): string => {
+export default function getColor(key: PaletteKey): string {
   if (colorScheme === 'dark') {
     return darkPalette[key];
   } else {
     return lightPalette[key];
   }
-};
+}

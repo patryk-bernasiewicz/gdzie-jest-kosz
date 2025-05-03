@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { Pressable, PressableProps } from 'react-native';
+import { GestureResponderEvent, Pressable, PressableProps } from 'react-native';
 
 export default function HapticTab({
   onPress,
@@ -8,7 +8,7 @@ export default function HapticTab({
   accessibilityLabel,
   ...rest
 }: PressableProps) {
-  const handlePress = (event: any) => {
+  const handlePress = (event: GestureResponderEvent) => {
     Haptics.selectionAsync();
     if (onPress) {
       onPress(event);

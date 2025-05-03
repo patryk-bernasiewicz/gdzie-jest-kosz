@@ -1,3 +1,5 @@
 import { atom } from 'jotai';
 
-export const locationOffsetAtom = atom<[number, number]>([0, 0]);
+const locationOffsetAtom = atom<[number, number]>([0, 0]);
+
+export default locationOffsetAtom;

@@ -6,7 +6,7 @@ import SignOutButton from '@/feature/auth/components/SignOutButton';
 import useUserProfile from '@/feature/user/hooks/useUserProfile';
 import Heading from '@/ui/components/Heading';
 import Text from '@/ui/components/Text';
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 export default function ProfileScreen() {
   const userProfile = useUserProfile();

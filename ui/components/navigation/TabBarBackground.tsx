@@ -2,7 +2,7 @@ import { BlurView } from 'expo-blur';
 import React from 'react';
 import { Appearance, Platform, StyleSheet, View } from 'react-native';
 
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 const colorScheme = Appearance.getColorScheme();
 

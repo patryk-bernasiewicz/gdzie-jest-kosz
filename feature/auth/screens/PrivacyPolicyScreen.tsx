@@ -2,7 +2,7 @@ import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 
 import Heading from '@/ui/components/Heading';
 import Text from '@/ui/components/Text';
-import { getColor } from '@/ui/utils/getColor';
+import getColor from '@/ui/utils/getColor';
 
 export default function PrivacyPolicyScreen() {
   const handleMailto = async (email: string) => {
