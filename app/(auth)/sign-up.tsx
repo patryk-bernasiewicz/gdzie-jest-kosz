@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
-import Heading from '@/components/ui/Heading';
-import Text from '@/components/ui/Text';
-import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
-import TextInput from '@/components/ui/input/TextInput';
 import { useAuthToken } from '@/feature/auth/store/authToken.atom';
-import { getColor } from '@/lib/getColor';
+import Heading from '@/ui/components/Heading';
+import Text from '@/ui/components/Text';
+import TouchableOpacityButton from '@/ui/components/TouchableOpacityButton';
+import TextInput from '@/ui/components/input/TextInput';
+import { getColor } from '@/ui/utils/getColor';
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 
-import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
 import useLocation from '@/feature/map/hooks/useLocation';
-import { getColor } from '@/lib/getColor';
+import TouchableOpacityButton from '@/ui/components/TouchableOpacityButton';
+import { getColor } from '@/ui/utils/getColor';
 
 const styles = StyleSheet.create({
   container: {

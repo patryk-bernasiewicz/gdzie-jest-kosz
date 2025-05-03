@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react-native';
 import { type ReactNode } from 'react';
 
-import api from '@/lib/api';
+import api from '@/utils/api';
 
 import useLocation from '../../../map/hooks/useLocation';
 import useBins from '../useBins';

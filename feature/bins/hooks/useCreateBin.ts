@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
-import api from '@/lib/api';
+import api from '@/utils/api';
 
 import { Bin } from '../types';
 

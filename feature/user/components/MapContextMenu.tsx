@@ -1,8 +1,8 @@
 import { Fragment, useMemo } from 'react';
 import { Dimensions, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
-import Text from '@/components/ui/Text';
-import { getColor } from '@/lib/getColor';
+import Text from '@/ui/components/Text';
+import { getColor } from '@/ui/utils/getColor';
 
 type MapContextMenuProps = {
   screenX?: number | null;

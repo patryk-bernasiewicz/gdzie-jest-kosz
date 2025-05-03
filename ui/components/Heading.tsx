@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { getColor } from '@/lib/getColor';
+import { getColor } from '@/ui/utils/getColor';
 
 type HeadingProps = ComponentProps<typeof Text> & {
   text: string;

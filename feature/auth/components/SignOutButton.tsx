@@ -3,7 +3,7 @@ import * as Linking from 'expo-linking';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { getColor } from '@/lib/getColor';
+import { getColor } from '@/ui/utils/getColor';
 
 export default function SignOutButton() {
   const [isPending, setPending] = useState(false);

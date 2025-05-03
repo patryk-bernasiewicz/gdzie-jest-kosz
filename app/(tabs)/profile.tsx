@@ -2,11 +2,11 @@ import { SignedIn, SignedOut } from '@clerk/clerk-expo';
 import { Href, Link } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import SignOutButton from '@/components/SignOutButton';
-import Heading from '@/components/ui/Heading';
-import Text from '@/components/ui/Text';
+import SignOutButton from '@/feature/auth/components/SignOutButton';
 import useUserProfile from '@/feature/user/hooks/useUserProfile';
-import { getColor } from '@/lib/getColor';
+import Heading from '@/ui/components/Heading';
+import Text from '@/ui/components/Text';
+import { getColor } from '@/ui/utils/getColor';
 
 export default function ProfileScreen() {
   const userProfile = useUserProfile();
@@ -49,7 +49,6 @@ export default function ProfileScreen() {
             <Text style={styles.link}>Utwórz konto</Text>
           </Link>
         </View>
-        <SignOutButton />
       </SignedOut>
     </View>
   );

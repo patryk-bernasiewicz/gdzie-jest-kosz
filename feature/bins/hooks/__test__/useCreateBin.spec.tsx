@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
-import api from '@/lib/api';
+import api from '@/utils/api';
 
 import useCreateBin from '../useCreateBin';
 

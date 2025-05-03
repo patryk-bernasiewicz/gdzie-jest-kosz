@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import useLocation from '@/feature/map/hooks/useLocation';
-import api from '@/lib/api';
+import api from '@/utils/api';
 
 import { Bin } from '../types';
 

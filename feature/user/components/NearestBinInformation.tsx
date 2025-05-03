@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { BinWithDistance } from '@/feature/bins/types/BinWithDistance';
-import { getColor } from '@/lib/getColor';
 import { WorldDirection } from '@/types/WorldDirection';
+import { getColor } from '@/ui/utils/getColor';
 
-import Text from '../../../components/ui/Text';
+import Text from '../../../ui/components/Text';
 
 const fallbackText = 'W pobliżu nie znaleziono kosza...';
 const nextToYouTreshold = 5.99;

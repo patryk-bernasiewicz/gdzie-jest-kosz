@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import useLocation from '@/feature/map/hooks/useLocation';
-import calculateDistance from '@/lib/calculateDistance';
+import calculateDistance from '@/utils/calculateDistance';
 
 import { Bin, BinWithDistance } from '../types';
 

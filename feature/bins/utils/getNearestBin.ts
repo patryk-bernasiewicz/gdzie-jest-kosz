@@ -1,4 +1,4 @@
-import calculateDistance from '@/lib/calculateDistance';
+import calculateDistance from '@/utils/calculateDistance';
 
 import { BinWithDistance } from '../types';
 

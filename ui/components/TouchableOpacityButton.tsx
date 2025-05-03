@@ -3,7 +3,7 @@
 import { ComponentProps } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import { getColor } from '@/lib/getColor';
+import { getColor } from '@/ui/utils/getColor';
 
 const styles = StyleSheet.create({
   button: {
