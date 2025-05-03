@@ -7,7 +7,7 @@ import DebugUserLocation from '@/feature/user/components/debug/DebugUserLocation
 import useUserProfile from '@/feature/user/hooks/useUserProfile';
 import { getColor } from '@/ui/utils/getColor';
 
-export default function HomeScreen() {
+export default function MapScreen() {
   const { location } = useLocation();
   const userProfile = useUserProfile();
 
