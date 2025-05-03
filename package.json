@@ -2,6 +2,7 @@
   "name": "gdzie-jest-kosz",
   "main": "expo-router/entry",
   "version": "DEV-0.0.1",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -10,7 +11,11 @@
     "web": "expo start --web",
     "test": "jest ./{app,components,constants,hooks,lib}/**/__test__/*.spec.{ts,tsx}",
     "test:watch": "jest --watch ./{app,components,constants,hooks,lib}/**/__test__/*.spec.{ts,tsx} --watchAll",
-    "lint": "expo lint"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "check-format": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "validate": "npm run check-format && npm run lint && npm run test"
   },
   "jest": {
     "preset": "jest-expo"
@@ -63,10 +68,21 @@
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-config-universe": "^15.0.3",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-native": "^5.0.0",
     "jest": "^29.7.0",
     "jest-expo": "~52.0.6",
+    "prettier": "^3.5.3",
     "react-test-renderer": "^18.3.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.31.1"
   },
   "private": true
 }

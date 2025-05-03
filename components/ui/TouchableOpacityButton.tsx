@@ -1,61 +1,61 @@
-import { Appearance, StyleSheet, Text, TouchableOpacity } from "react-native";
-
-const colorScheme = Appearance.getColorScheme();
+/* the variants here are used in a dynamic way, but eslint doesn't know that */
+/* eslint-disable react-native/no-color-literals, react-native/no-unused-styles */
+import { getColor } from '@/lib/getColor';
+import { ComponentProps } from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   button: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: colorScheme === "dark" ? "#333" : "#ccc",
+    borderColor: getColor('border'),
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 10,
     paddingBottom: 10,
   },
   text: {
-    fontWeight: "600",
+    fontWeight: '600',
     fontSize: 16,
   },
 });
 
 const variantStyles = StyleSheet.create({
   primary: {
-    backgroundColor: "#007bff",
+    backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
-    color: "#fff",
+    color: '#fff',
   },
   secondary: {
-    backgroundColor: "#6c757d",
+    backgroundColor: '#6c757d',
     padding: 10,
     borderRadius: 5,
-    color: "#fff",
+    color: '#fff',
   },
   tertiary: {
-    backgroundColor: "#f8f9fa",
+    backgroundColor: '#f8f9fa',
     padding: 10,
     borderRadius: 5,
-    color: "#fff",
+    color: '#fff',
   },
 });
 
 const variantTextStyles = StyleSheet.create({
   primary: {
-    color: "#fff",
+    color: '#fff',
   },
   secondary: {
-    color: "#fff",
+    color: '#fff',
   },
   tertiary: {
-    color: "#000",
+    color: '#000',
   },
 });
 
-type TouchableOpacityButtonProps = React.ComponentProps<
-  typeof TouchableOpacity
-> & {
+type TouchableOpacityButtonProps = ComponentProps<typeof TouchableOpacity> & {
   text: string;
   variant?: keyof typeof variantStyles;
 };

@@ -1,24 +1,24 @@
-import { renderHook } from "@testing-library/react-native";
-import useNearestBin from "../useNearestBin";
-import { BinWithDistance } from "@/types/BinWithDistance";
+import { renderHook } from '@testing-library/react-native';
+import useNearestBin from '../useNearestBin';
+import { BinWithDistance } from '@/types/BinWithDistance';
 
 // Mock useLocation
-jest.mock("../useLocation", () => ({
+jest.mock('../useLocation', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
-import useLocation from "../useLocation";
+import useLocation from '../../../map/hooks/useLocation';
 
 // Mock getNearestBin
-jest.mock("@/lib/getNearestBin", () => ({
+jest.mock('@/lib/getNearestBin', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
-import getNearestBin from "@/lib/getNearestBin";
+import getNearestBin from '@/lib/getNearestBin';
 
-describe("useNearestBin", () => {
+describe('useNearestBin', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -27,7 +27,7 @@ describe("useNearestBin", () => {
     (useLocation as jest.Mock).mockReturnValue({ location });
   }
 
-  it("returns nulls if location is not available", () => {
+  it('returns nulls if location is not available', () => {
     mockLocation(null);
     const { result } = renderHook(() => useNearestBin([]));
     expect(result.current).toEqual({
@@ -36,7 +36,7 @@ describe("useNearestBin", () => {
     });
   });
 
-  it("returns nulls if bins array is empty", () => {
+  it('returns nulls if bins array is empty', () => {
     mockLocation([52.1, 21.0]);
     const { result } = renderHook(() => useNearestBin([]));
     expect(result.current).toEqual({
@@ -45,7 +45,7 @@ describe("useNearestBin", () => {
     });
   });
 
-  it("returns nulls if bins is undefined", () => {
+  it('returns nulls if bins is undefined', () => {
     mockLocation([52.1, 21.0]);
     const { result } = renderHook(() => useNearestBin(undefined));
     expect(result.current).toEqual({
@@ -54,7 +54,7 @@ describe("useNearestBin", () => {
     });
   });
 
-  it("returns the nearest bin and direction if location and bins are available", () => {
+  it('returns the nearest bin and direction if location and bins are available', () => {
     mockLocation([52.1, 21.0]);
     const bins = [
       {
@@ -62,7 +62,7 @@ describe("useNearestBin", () => {
         latitude: 52.1005,
         longitude: 21.0005,
         distance: 10,
-        type: "bin" as const,
+        type: 'bin' as const,
         createdAt: new Date(),
         updatedAt: new Date(),
         deletedAt: null,
@@ -72,7 +72,7 @@ describe("useNearestBin", () => {
         latitude: 53.0,
         longitude: 22.0,
         distance: null,
-        type: "bin" as const,
+        type: 'bin' as const,
         createdAt: new Date(),
         updatedAt: new Date(),
         deletedAt: null,
@@ -82,12 +82,12 @@ describe("useNearestBin", () => {
     const { result } = renderHook(() => useNearestBin(bins));
     expect(result.current).toEqual({
       nearestBin: bins[0],
-      nearestBinDirection: "northeast", // 52.1005 > 52.1, 21.0005 > 21.0
+      nearestBinDirection: 'northeast', // 52.1005 > 52.1, 21.0005 > 21.0
     });
     expect(getNearestBin).toHaveBeenCalledWith(bins, 52.1, 21.0);
   });
 
-  it("returns null direction if nearestBin is null", () => {
+  it('returns null direction if nearestBin is null', () => {
     mockLocation([52.1, 21.0]);
     const bins = [
       {
@@ -95,7 +95,7 @@ describe("useNearestBin", () => {
         latitude: 52.1005,
         longitude: 21.0005,
         distance: 10,
-        type: "bin" as const,
+        type: 'bin' as const,
         createdAt: new Date(),
         updatedAt: new Date(),
         deletedAt: null,
@@ -109,12 +109,12 @@ describe("useNearestBin", () => {
     });
   });
 
-  it("returns correct direction for various positions", () => {
+  it('returns correct direction for various positions', () => {
     mockLocation([52.1, 21.0]);
     const baseBin = {
       id: 1,
       distance: 10,
-      type: "bin" as const,
+      type: 'bin' as const,
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null,
@@ -122,39 +122,39 @@ describe("useNearestBin", () => {
     const testCases = [
       {
         bin: { ...baseBin, latitude: 52.1, longitude: 21.0 },
-        expected: "here",
+        expected: 'here',
       },
       {
         bin: { ...baseBin, latitude: 52.2, longitude: 21.0 },
-        expected: "north",
+        expected: 'north',
       },
       {
         bin: { ...baseBin, latitude: 52.0, longitude: 21.0 },
-        expected: "south",
+        expected: 'south',
       },
       {
         bin: { ...baseBin, latitude: 52.1, longitude: 22.0 },
-        expected: "east",
+        expected: 'east',
       },
       {
         bin: { ...baseBin, latitude: 52.1, longitude: 20.0 },
-        expected: "west",
+        expected: 'west',
       },
       {
         bin: { ...baseBin, latitude: 52.2, longitude: 22.0 },
-        expected: "northeast",
+        expected: 'northeast',
       },
       {
         bin: { ...baseBin, latitude: 52.2, longitude: 20.0 },
-        expected: "northwest",
+        expected: 'northwest',
       },
       {
         bin: { ...baseBin, latitude: 52.0, longitude: 22.0 },
-        expected: "southeast",
+        expected: 'southeast',
       },
       {
         bin: { ...baseBin, latitude: 52.0, longitude: 20.0 },
-        expected: "southwest",
+        expected: 'southwest',
       },
     ];
     for (const { bin, expected } of testCases) {

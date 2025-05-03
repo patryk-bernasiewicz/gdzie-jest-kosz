@@ -1,10 +1,10 @@
-import { getColor } from "@/lib/getColor";
-import { useClerk } from "@clerk/clerk-expo";
-import * as Linking from "expo-linking";
-import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { getColor } from '@/lib/getColor';
+import { useClerk } from '@clerk/clerk-expo';
+import * as Linking from 'expo-linking';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export const SignOutButton = () => {
+export default function SignOutButton() {
   const [isPending, setPending] = useState(false);
   const { signOut } = useClerk();
 
@@ -15,7 +15,7 @@ export const SignOutButton = () => {
 
     try {
       await signOut();
-      Linking.openURL(Linking.createURL("/(tabs)/profile"));
+      Linking.openURL(Linking.createURL('/(tabs)/profile'));
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
     } finally {
@@ -37,25 +37,25 @@ export const SignOutButton = () => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   wrapper: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   button: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 8,
     borderRadius: 4,
-    backgroundColor: getColor("primary"),
+    backgroundColor: getColor('primary'),
   },
   buttonDisabled: {
     opacity: 0.5,
-    pointerEvents: "none",
+    pointerEvents: 'none',
   },
   buttonText: {
-    color: getColor("textInvert"),
+    color: getColor('textInvert'),
   },
 });

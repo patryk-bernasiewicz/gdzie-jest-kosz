@@ -1,17 +1,17 @@
-import useBins from "@/hooks/useBins";
-import useBinsWithDistance from "@/hooks/useBinsWithDistance";
-import createLeafletHtml from "@/lib/createLeafletHtml";
-import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, Pressable, Alert } from "react-native";
-import { WebView } from "react-native-webview";
-import BinsList from "./debug/BinsList";
-import useCreateBin from "@/hooks/useCreateBin";
-import OffsetControls from "./debug/OffsetControls";
-import useNearestBin from "@/hooks/useNearestBin";
-import NearestBinInformation from "./NearestBinInformation";
-import { Bin } from "@/types/Bin";
-import MapContextMenu from "./MapContextMenu";
-import useMarkInvalidBin from "@/hooks/useMarkInvalidBin";
+import useBins from '@/feature/bins/hooks/useBins';
+import useBinsWithDistance from '@/feature/bins/hooks/useBinsWithDistance';
+import createLeafletHtml from '@/lib/createLeafletHtml';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, Text, Pressable, Alert } from 'react-native';
+import { WebView } from 'react-native-webview';
+import BinsList from './debug/BinsList';
+import useCreateBin from '@/feature/bins/hooks/useCreateBin';
+import OffsetControls from './debug/OffsetControls';
+import NearestBinInformation from './NearestBinInformation';
+import { Bin } from '@/types/Bin';
+import MapContextMenu from './MapContextMenu';
+import useMarkInvalidBin from '@/feature/bins/hooks/useMarkInvalidBin';
+import useNearestBin from '@/feature/bins/hooks/useNearestBin';
 
 type LeafletMapProps = {
   latitude?: number | null;
@@ -21,7 +21,7 @@ type LeafletMapProps = {
 
 const logsDisabled = false;
 
-function LeafletMap({ latitude, longitude, zoom = 13 }: LeafletMapProps) {
+function LeafletMap({ latitude, longitude }: LeafletMapProps) {
   const mapViewRef = useRef<WebView>(null);
   const bins = useBins();
 
@@ -46,11 +46,12 @@ function LeafletMap({ latitude, longitude, zoom = 13 }: LeafletMapProps) {
     x: number;
     y: number;
   } | null>(null);
-  const [mapSelectedBins, setMapSelectedBins] = useState<Bin["id"][]>([]);
+  const [mapSelectedBins, setMapSelectedBins] = useState<Bin['id'][]>([]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const logWebViewMessage = (...messages: any[]) => {
     if (!logsDisabled) {
-      console.log("WebView message: ", ...messages);
+      console.log('WebView message: ', ...messages);
     }
   };
 
@@ -66,20 +67,16 @@ function LeafletMap({ latitude, longitude, zoom = 13 }: LeafletMapProps) {
 
   const handleMarkInvalidBin = (binId: number) => {
     console.log(`bin id ${binId} marked as invalid`);
-    Alert.alert(
-      "Potwierdź akcję",
-      `Czy chcesz oznaczyć kosz ID: ${binId} jako nieaktualny?`,
-      [
-        {
-          text: "Tak",
-          onPress: () => handleConfirmInvalidBin(binId),
-        },
-        {
-          text: "Nie",
-          style: "cancel",
-        },
-      ]
-    );
+    Alert.alert('Potwierdź akcję', `Czy chcesz oznaczyć kosz ID: ${binId} jako nieaktualny?`, [
+      {
+        text: 'Tak',
+        onPress: () => handleConfirmInvalidBin(binId),
+      },
+      {
+        text: 'Nie',
+        style: 'cancel',
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -177,20 +174,20 @@ function LeafletMap({ latitude, longitude, zoom = 13 }: LeafletMapProps) {
             onMessage={(event) => {
               try {
                 const data = JSON.parse(event.nativeEvent.data);
-                if (data.type === "maploaded") {
+                if (data.type === 'maploaded') {
                   setMapLoaded(true);
-                } else if (data.type === "log") {
-                  logWebViewMessage("event in WebView: ", data.message);
-                } else if (data.type === "contextmenu") {
+                } else if (data.type === 'log') {
+                  logWebViewMessage('event in WebView: ', data.message);
+                } else if (data.type === 'contextmenu') {
                   setContextMenuPos(data.screenPos);
                   setSelectedPos([data.latlng.lat, data.latlng.lng]);
                   if (data.selectedBins) {
                     setMapSelectedBins(data.selectedBins);
                   }
                 }
-                logWebViewMessage("event in WebView: ", data);
+                logWebViewMessage('event in WebView: ', data);
               } catch (error) {
-                console.error("Failed to parse WebView message:", error);
+                console.error('Failed to parse WebView message:', error);
               }
             }}
             webviewDebuggingEnabled
@@ -207,10 +204,7 @@ function LeafletMap({ latitude, longitude, zoom = 13 }: LeafletMapProps) {
         />
         <BinsList bins={binsWithDistance} />
         <OffsetControls />
-        <NearestBinInformation
-          nearestBin={nearestBin}
-          direction={nearestBinDirection}
-        />
+        <NearestBinInformation nearestBin={nearestBin} direction={nearestBinDirection} />
       </View>
     </Pressable>
   );
@@ -219,19 +213,11 @@ function LeafletMap({ latitude, longitude, zoom = 13 }: LeafletMapProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   webview: {
     flex: 1,
-  },
-  contextMenu: {
-    position: "absolute",
-    backgroundColor: "white",
-    padding: 10,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-    borderRadius: 5,
-    width: 150,
   },
 });
 

@@ -1,40 +1,63 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { useSignUp, isClerkAPIResponseError } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import TextInput from "@/components/ui/input/TextInput";
-import TouchableOpacityButton from "@/components/ui/TouchableOpacityButton";
-import Heading from "@/components/ui/Heading";
-import Text from "@/components/ui/Text";
-import useUpsertUser from "@/hooks/useUpsertUser";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { getColor } from "@/lib/getColor";
-import { useSession } from "@clerk/clerk-expo";
-import { useAuthToken } from "@/store/authToken.atom";
+import { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useSignUp, isClerkAPIResponseError } from '@clerk/clerk-expo';
+import { Link, useRouter } from 'expo-router';
+import TextInput from '@/components/ui/input/TextInput';
+import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
+import Heading from '@/components/ui/Heading';
+import Text from '@/components/ui/Text';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { getColor } from '@/lib/getColor';
+import { useSession } from '@clerk/clerk-expo';
+import { useAuthToken } from '@/store/authToken.atom';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: getColor("background"),
+    backgroundColor: getColor('background'),
     flex: 1,
     padding: 20,
   },
   link: {
-    color: getColor("primary"),
+    color: getColor('primary'),
     fontWeight: 600,
+  },
+  verificationText: {
+    marginBottom: 10,
+  },
+  securityNotice: {
+    marginTop: 10,
+  },
+  checkboxContainer: {
+    marginTop: 10,
+    marginBottom: 15,
+  },
+  checkboxText: {
+    textDecorationLine: 'none',
+    fontSize: 12,
+    color: getColor('text'),
+  },
+  loginPromptContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 3,
+    marginTop: 10,
+  },
+  privacyLink: {
+    marginTop: 10,
   },
 });
 
 const errorTranslations: Record<string, string> = {
-  form_param_nil: "Pole musi być wypełnione.",
+  form_param_nil: 'Pole musi być wypełnione.',
   form_password_pwned:
-    "Twoje hasło znajduje się na liście haseł, które wyciekły na innych stronach w Internecie. Proszę użyć innego hasła.",
-  invalid_email_address: "Niepoprawny adres e-mail.",
-  email_address_already_exists: "Ten adres e-mail już istnieje.",
-  invalid_password: "Niepoprawne hasło.",
-  password_too_short: "Hasło jest zbyt krótkie.",
-  password_too_weak: "Hasło jest zbyt słabe.",
-  missing_required_field: "Brak wymaganego pola.",
-  invalid_verification_code: "Niepoprawny kod weryfikacyjny.",
+    'Twoje hasło znajduje się na liście haseł, które wyciekły na innych stronach w Internecie. Proszę użyć innego hasła.',
+  invalid_email_address: 'Niepoprawny adres e-mail.',
+  email_address_already_exists: 'Ten adres e-mail już istnieje.',
+  invalid_password: 'Niepoprawne hasło.',
+  password_too_short: 'Hasło jest zbyt krótkie.',
+  password_too_weak: 'Hasło jest zbyt słabe.',
+  missing_required_field: 'Brak wymaganego pola.',
+  invalid_verification_code: 'Niepoprawny kod weryfikacyjny.',
 };
 
 export default function SignUpScreen() {
@@ -44,17 +67,16 @@ export default function SignUpScreen() {
   const [isPending, setPending] = useState(false);
   const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
   const [legalAccepted, setLegalAccepted] = useState(false);
   const [pendingVerification, setPendingVerification] = useState(false);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
   const [errors, setErrors] = useState<{
     email_address: string | null;
     password: string | null;
     consent_given: string | null;
   }>();
-
   useEffect(() => {
     if (!isLoaded || !session) return;
 
@@ -66,9 +88,9 @@ export default function SignUpScreen() {
         setAuthToken(null);
       }
 
-      router.replace("/profile");
+      router.replace('/profile');
     })();
-  }, [isLoaded, session]);
+  }, [isLoaded, session, setAuthToken, router]);
 
   // Handle submission of sign-up form
   const onSignUpPress = async () => {
@@ -85,7 +107,7 @@ export default function SignUpScreen() {
       });
 
       // Send user an email with verification code
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
 
       // Set 'pendingVerification' to true to display second form
       // and capture OTP code
@@ -96,27 +118,15 @@ export default function SignUpScreen() {
       console.error(JSON.stringify(err, null, 2));
 
       if (isClerkAPIResponseError(err)) {
-        const emailError = err.errors.find(
-          ({ meta }) => meta?.paramName === "email_address"
-        );
+        const emailError = err.errors.find(({ meta }) => meta?.paramName === 'email_address');
         const emailErrorText =
-          errorTranslations[emailError?.code || ""] ||
-          emailError?.message ||
-          null;
-        const passwordError = err.errors.find(
-          ({ meta }) => meta?.paramName === "password"
-        );
+          errorTranslations[emailError?.code || ''] || emailError?.message || null;
+        const passwordError = err.errors.find(({ meta }) => meta?.paramName === 'password');
         const passwordErrorText =
-          errorTranslations[passwordError?.code || ""] ||
-          passwordError?.message ||
-          null;
-        const legalError = err.errors.find(
-          ({ meta }) => meta?.paramName === "legal_accepted"
-        );
+          errorTranslations[passwordError?.code || ''] || passwordError?.message || null;
+        const legalError = err.errors.find(({ meta }) => meta?.paramName === 'legal_accepted');
         const legalErrorText =
-          errorTranslations[legalError?.code || ""] ||
-          legalError?.message ||
-          null;
+          errorTranslations[legalError?.code || ''] || legalError?.message || null;
 
         setErrors({
           email_address: emailErrorText,
@@ -143,7 +153,7 @@ export default function SignUpScreen() {
 
       // If verification was completed, set the session to active
       // and redirect the user
-      if (signUpAttempt.status === "complete") {
+      if (signUpAttempt.status === 'complete') {
         await setActive({ session: signUpAttempt.createdSessionId });
       } else {
         // If the status is not complete, check why. User may need to
@@ -158,14 +168,12 @@ export default function SignUpScreen() {
       setPending(false);
     }
   };
-
   if (pendingVerification) {
     return (
       <>
         <Heading text="Zweryfikuj adres e-mail" />
-        <Text style={{ marginBottom: 10 }}>
-          Wprowadź kod potwierdzający, który został wysłany na podany adres
-          e-mail.
+        <Text style={styles.verificationText}>
+          Wprowadź kod potwierdzający, który został wysłany na podany adres e-mail.
         </Text>
         <TextInput
           value={code}
@@ -180,7 +188,7 @@ export default function SignUpScreen() {
           onPress={onVerifyPress}
           disabled={isPending}
         />
-        <View style={{ marginTop: 10 }}>
+        <View style={styles.securityNotice}>
           <Text>Bezpieczne logowanie i rejestracja z systemem Clerk.</Text>
         </View>
       </>
@@ -207,41 +215,34 @@ export default function SignUpScreen() {
         label="Hasło"
         error={errors?.password}
         disabled={isPending}
-      />
+      />{' '}
       <BouncyCheckbox
         isChecked={legalAccepted}
         onPress={(checked) => setLegalAccepted(checked)}
         text="Akceptuję regulamin i politykę prywatności"
-        fillColor={getColor("primary")}
-        style={{ marginTop: 10, marginBottom: 15 }}
-        textStyle={{
-          textDecorationLine: "none",
-          fontSize: 12,
-          color: getColor("text"),
-        }}
+        fillColor={getColor('primary')}
+        style={styles.checkboxContainer}
+        textStyle={styles.checkboxText}
         disabled={isPending}
       />
-
       <TouchableOpacityButton
         variant="primary"
         onPress={onSignUpPress}
         text="Kontynuuj"
         disabled={isPending}
-      />
-      <View
-        style={{ display: "flex", flexDirection: "row", gap: 3, marginTop: 10 }}
-      >
+      />{' '}
+      <View style={styles.loginPromptContainer}>
         <Text>Czy masz już konto?</Text>
         <Link href="/sign-in">
           <Text style={styles.link}>Zaloguj się</Text>
         </Link>
       </View>
-      <View style={{ marginTop: 10 }}>
+      <View style={styles.privacyLink}>
         <Link href="/privacy-policy">
           <Text style={styles.link}>Polityka prywatności</Text>
         </Link>
       </View>
-      <View style={{ marginTop: 10 }}>
+      <View style={styles.securityNotice}>
         <Text>Bezpieczne logowanie i rejestracja z systemem Clerk.</Text>
       </View>
     </View>

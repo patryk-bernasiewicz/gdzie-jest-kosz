@@ -1,8 +1,8 @@
-import getNearestBin from "@/lib/getNearestBin";
-import { BinWithDistance } from "@/types/BinWithDistance";
-import { useMemo } from "react";
-import useLocation from "./useLocation";
-import { WorldDirection } from "@/types/WorldDirection";
+import getNearestBin from '@/lib/getNearestBin';
+import { BinWithDistance } from '@/types/BinWithDistance';
+import { useMemo } from 'react';
+import useLocation from './useLocation';
+import { WorldDirection } from '@/types/WorldDirection';
 
 export default function useNearestBin(bins?: BinWithDistance[] | null): {
   nearestBin: BinWithDistance | null;
@@ -11,8 +11,7 @@ export default function useNearestBin(bins?: BinWithDistance[] | null): {
   const { location } = useLocation();
 
   const nearestBin = useMemo(() => {
-    if (!bins || bins.length === 0 || !location || !location[0] || !location[1])
-      return null;
+    if (!bins || bins.length === 0 || !location || !location[0] || !location[1]) return null;
 
     return getNearestBin(bins, location[0], location[1]);
   }, [bins, location]);
@@ -30,14 +29,14 @@ export default function useNearestBin(bins?: BinWithDistance[] | null): {
     if (angleDegrees < 0) angleDegrees += 360;
 
     const directions: WorldDirection[] = [
-      "east",
-      "northeast",
-      "north",
-      "northwest",
-      "west",
-      "southwest",
-      "south",
-      "southeast",
+      'east',
+      'northeast',
+      'north',
+      'northwest',
+      'west',
+      'southwest',
+      'south',
+      'southeast',
     ];
 
     const index = Math.round(((angleDegrees + 22.5) % 360) / 45) % 8;

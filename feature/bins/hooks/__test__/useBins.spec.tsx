@@ -1,14 +1,15 @@
-import { renderHook, waitFor } from "@testing-library/react-native";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import useBins from "../useBins";
+import { renderHook, waitFor } from '@testing-library/react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import useBins from '../useBins';
+import { type ReactNode } from 'react';
 
 // Mock useLocation
-jest.mock("../useLocation", () => ({
+jest.mock('../useLocation', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
-import useLocation from "../useLocation";
+import useLocation from '../../../map/hooks/useLocation';
 
 // Helper to mock useLocation's new return type
 function mockUseLocation({
@@ -39,7 +40,7 @@ function mockUseLocation({
   });
 }
 
-describe("useBins", () => {
+describe('useBins', () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -53,7 +54,7 @@ describe("useBins", () => {
     },
   });
 
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
@@ -62,7 +63,7 @@ describe("useBins", () => {
     queryClient.clear();
   });
 
-  it("does not fetch bins if location is not available", async () => {
+  it('does not fetch bins if location is not available', async () => {
     mockUseLocation({ location: null });
 
     const { result } = renderHook(() => useBins(), { wrapper });
@@ -71,7 +72,7 @@ describe("useBins", () => {
     expect(result.current.isFetching).toBe(false);
   });
 
-  it("fetches bins if location is available", async () => {
+  it('fetches bins if location is available', async () => {
     mockUseLocation({ location: [52.1, 21.0] });
 
     global.fetch = jest.fn().mockResolvedValueOnce({
@@ -82,15 +83,13 @@ describe("useBins", () => {
     const { result } = renderHook(() => useBins(), { wrapper });
 
     await waitFor(() => expect(result.current.data).toBeDefined());
-    expect(result.current.data).toEqual([
-      { id: 1, latitude: 52.1, longitude: 21.0 },
-    ]);
+    expect(result.current.data).toEqual([{ id: 1, latitude: 52.1, longitude: 21.0 }]);
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining(`/bins/?latitude=52.1&longitude=21`)
     );
   });
 
-  it("handles fetch errors gracefully", async () => {
+  it('handles fetch errors gracefully', async () => {
     mockUseLocation({ location: [52.1, 21.0] });
 
     const fetchTemp = global.fetch;
@@ -108,12 +107,12 @@ describe("useBins", () => {
       { timeout: 5000 }
     );
     expect(result.current.error).toBeInstanceOf(Error);
-    expect(result.current.error?.message).toBe("Network response was not ok");
+    expect(result.current.error?.message).toBe('Network response was not ok');
 
     global.fetch = fetchTemp; // Restore the original fetch function
   });
 
-  it("does not fetch if binsUrl is null", async () => {
+  it('does not fetch if binsUrl is null', async () => {
     mockUseLocation({ location: null });
 
     const { result } = renderHook(() => useBins(), { wrapper });
@@ -122,14 +121,14 @@ describe("useBins", () => {
     expect(result.current.isFetching).toBe(false);
   });
 
-  it("returns isLoading from useLocation", () => {
+  it('returns isLoading from useLocation', () => {
     mockUseLocation({ location: [52.1, 21.0], isLoading: true });
     const { location, isLoading } = useLocation();
     expect(location).toEqual([52.1, 21.0]);
     expect(isLoading).toBe(true);
   });
 
-  it("calls offset control functions", () => {
+  it('calls offset control functions', () => {
     const moveOffsetNorth = jest.fn();
     const moveOffsetSouth = jest.fn();
     const moveOffsetEast = jest.fn();

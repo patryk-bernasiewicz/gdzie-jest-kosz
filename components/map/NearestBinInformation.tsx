@@ -1,31 +1,31 @@
-import { BinWithDistance } from "@/types/BinWithDistance";
-import { View, StyleSheet } from "react-native";
-import Text from "../ui/Text";
-import { WorldDirection } from "@/types/WorldDirection";
-import { getColor } from "@/lib/getColor";
-import { useMemo } from "react";
+import { BinWithDistance } from '@/types/BinWithDistance';
+import { View, StyleSheet } from 'react-native';
+import Text from '../ui/Text';
+import { WorldDirection } from '@/types/WorldDirection';
+import { getColor } from '@/lib/getColor';
+import { useMemo } from 'react';
 
-const fallbackText = "W pobliżu nie znaleziono kosza...";
+const fallbackText = 'W pobliżu nie znaleziono kosza...';
 const nextToYouTreshold = 5.99;
 
 const worldDirectionToLabel: Record<WorldDirection, string> = {
-  north: "na północ stąd",
-  northeast: "na północny wschód stąd",
-  northwest: "na północny zachód stąd",
-  south: "na południe stąd",
-  east: "na wschód stąd",
-  west: "na zachód stąd",
-  southeast: "na południowy wschód stąd",
-  southwest: "na południowy zachód stąd",
-  here: "",
+  north: 'na północ stąd',
+  northeast: 'na północny wschód stąd',
+  northwest: 'na północny zachód stąd',
+  south: 'na południe stąd',
+  east: 'na wschód stąd',
+  west: 'na zachód stąd',
+  southeast: 'na południowy wschód stąd',
+  southwest: 'na południowy zachód stąd',
+  here: '',
 };
 
 function getDistanceLabel(distance: number | null): string {
   if (!distance) {
-    return "nie wiadomo jak daleko :(";
+    return 'nie wiadomo jak daleko :(';
   }
   if (distance < nextToYouTreshold) {
-    return "obok Ciebie!";
+    return 'obok Ciebie!';
   }
   return `około ${distance.toFixed(0)} metrów`;
 }
@@ -58,9 +58,9 @@ export default function NearestBinInformation({
 
   const text = useMemo(() => {
     if (nearestBin && distance) {
-      return ["Najbliższy kosz jest", distanceText, directionLabel ?? undefined]
+      return ['Najbliższy kosz jest', distanceText, directionLabel ?? undefined]
         .filter(Boolean)
-        .join(" ");
+        .join(' ');
     }
     return fallbackText;
   }, [nearestBin, distance, distanceText, directionLabel]);
@@ -78,14 +78,14 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     left: 0,
     right: 0,
-    backgroundColor: getColor("background"),
-    position: "absolute",
+    backgroundColor: getColor('background'),
+    position: 'absolute',
   },
   text: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: getColor("text"),
-    textAlign: "center" as const,
+    fontWeight: 'bold',
+    color: getColor('text'),
+    textAlign: 'center' as const,
     padding: 10,
   },
 });

@@ -1,6 +1,6 @@
-import { getDefaultStore } from "jotai";
-import { authTokenAtom } from "./authToken.atom";
-import { getClerkInstance } from "@clerk/clerk-expo";
+import { getDefaultStore } from 'jotai';
+import { authTokenAtom } from './authToken.atom';
+import { getClerkInstance } from '@clerk/clerk-expo';
 
 let cachedToken: string | null = null;
 let cachedAt: number | null = null;
@@ -33,10 +33,10 @@ export async function fetchAndSetClerkToken() {
     if (token) {
       return token;
     } else {
-      console.warn("[fetchAndSetClerkToken] Token fetch returned null.");
+      console.warn('[fetchAndSetClerkToken] Token fetch returned null.');
     }
   } catch (error) {
-    console.error("[fetchAndSetClerkToken] Error fetching Clerk token:", error);
+    console.error('[fetchAndSetClerkToken] Error fetching Clerk token:', error);
     return null;
   }
 }

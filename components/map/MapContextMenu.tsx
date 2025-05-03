@@ -1,12 +1,7 @@
-import { Fragment, useMemo } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import Text from "@/components/ui/Text";
-import { getColor } from "@/lib/getColor";
+import { Fragment, useMemo } from 'react';
+import { Dimensions, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import Text from '@/components/ui/Text';
+import { getColor } from '@/lib/getColor';
 
 type MapContextMenuProps = {
   screenX?: number | null;
@@ -16,7 +11,7 @@ type MapContextMenuProps = {
   onCreateBin: () => void;
   disabled?: boolean;
   selectedBinIds?: number[];
-  onMarkInvalidBin: (binId: number) => void;
+  onMarkInvalidBin: () => void;
 };
 
 const defaultPadding = 30;
@@ -33,9 +28,9 @@ export default function MapContextMenu({
 }: MapContextMenuProps) {
   const menuPosY = screenY ? screenY + padding : padding;
   const menuPosX = useMemo(() => {
-    const maxX = Dimensions.get("window").width - 150 - padding;
+    const maxX = Dimensions.get('window').width - 150 - padding;
     return screenX ? Math.min(maxX, screenX) : maxX;
-  }, [screenX]);
+  }, [padding, screenX]);
 
   if (!isOpen) {
     return null;
@@ -60,12 +55,10 @@ export default function MapContextMenu({
         <Text onPress={onCreateBin} disabled={disabled}>
           Tu jest kosz!
         </Text>
-        {selectedBinIds?.map((binId, index) => (
+        {selectedBinIds?.map((binId) => (
           <Fragment key={binId}>
             <View style={styles.separator} />
-            <Text onPress={() => onMarkInvalidBin(binId)}>
-              Kosz ID: {binId} - nieaktualny?
-            </Text>
+            <Text onPress={() => onMarkInvalidBin()}>Kosz ID: {binId} - nieaktualny?</Text>
           </Fragment>
         ))}
       </View>
@@ -75,25 +68,20 @@ export default function MapContextMenu({
 
 const styles = StyleSheet.create({
   contextMenu: {
-    position: "absolute",
-    backgroundColor: getColor("background"),
+    position: 'absolute',
+    backgroundColor: getColor('background'),
     padding: 10,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     borderRadius: 5,
     width: 150,
   },
   contextMenuDisabled: {
-    backgroundColor: getColor("backgroundDim"),
-    pointerEvents: "none",
-  },
-  text: {
-    color: getColor("text"),
-    fontSize: 16,
-    width: "100%",
+    backgroundColor: getColor('backgroundDim'),
+    pointerEvents: 'none',
   },
   separator: {
     height: 1,
-    backgroundColor: getColor("border"),
+    backgroundColor: getColor('border'),
     marginVertical: 5,
   },
 });

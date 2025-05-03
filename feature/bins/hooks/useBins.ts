@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import useLocation from "./useLocation";
-import { Bin } from "@/types/Bin";
-import api from "@/lib/api";
+import { useQuery } from '@tanstack/react-query';
+import { Bin } from '@/types/Bin';
+import api from '@/lib/api';
+import useLocation from '@/feature/map/hooks/useLocation';
 
 const disableFetchingBins = false;
 
@@ -13,14 +13,14 @@ export default function useBins() {
       : null;
 
   return useQuery<Bin[]>({
-    queryKey: ["bins"],
+    queryKey: ['bins'],
     queryFn: async () => {
       if (!binsUrl) return null;
       try {
         const response = await api.get(binsUrl);
         return response.data;
       } catch (error) {
-        console.error("Error fetching bins:", error);
+        console.error('Error fetching bins:', error);
         throw error;
       }
     },

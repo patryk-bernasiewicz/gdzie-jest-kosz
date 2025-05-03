@@ -1,8 +1,8 @@
-import { Bin } from "@/types/Bin";
-import useLocation from "./useLocation";
-import { useMemo } from "react";
-import { BinWithDistance } from "@/types/BinWithDistance";
-import calculateDistance from "@/lib/calculateDistance";
+import { Bin } from '@/types/Bin';
+import { useMemo } from 'react';
+import { BinWithDistance } from '@/types/BinWithDistance';
+import calculateDistance from '@/lib/calculateDistance';
+import useLocation from '@/feature/map/hooks/useLocation';
 
 export default function useBinsWithDistance(bins?: Bin[]) {
   const { location } = useLocation();
@@ -24,10 +24,7 @@ export default function useBinsWithDistance(bins?: Bin[]) {
       return {
         ...bin,
         distance: isCloseEnough
-          ? calculateDistance(
-              [userLatitude, userLongitude],
-              [bin.latitude, bin.longitude]
-            )
+          ? calculateDistance([userLatitude, userLongitude], [bin.latitude, bin.longitude])
           : null,
       };
     });

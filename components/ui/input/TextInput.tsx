@@ -1,7 +1,8 @@
-import { getColor } from "@/lib/getColor";
-import { TextInput as RNTextInput, StyleSheet, Text, View } from "react-native";
+import { getColor } from '@/lib/getColor';
+import { ComponentProps } from 'react';
+import { TextInput as RNTextInput, StyleSheet, Text, View } from 'react-native';
 
-type TextInputProps = React.ComponentProps<typeof RNTextInput> & {
+type TextInputProps = ComponentProps<typeof RNTextInput> & {
   error?: string | null;
   label?: string;
   disabled?: boolean;
@@ -13,23 +14,23 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     borderWidth: 1,
-    borderColor: getColor("border"),
+    borderColor: getColor('border'),
     borderRadius: 4,
     padding: 10,
   },
   label: {
     fontSize: 11,
-    color: getColor("textDim"),
+    color: getColor('textDim'),
     marginBottom: 2,
   },
   input: {
     height: 30,
-    color: getColor("text"),
+    color: getColor('text'),
     fontSize: 16,
   },
   inputDisabled: {
     opacity: 0.5,
-    pointerEvents: "none",
+    pointerEvents: 'none',
   },
   error: {
     marginTop: 1,
@@ -38,28 +39,19 @@ const styles = StyleSheet.create({
   errorText: {
     marginLeft: 10,
     marginRight: 10,
-    color: getColor("error"),
+    color: getColor('error'),
     fontSize: 12,
   },
 });
 
-export default function TextInput({
-  error,
-  label,
-  disabled,
-  ...inputProps
-}: TextInputProps) {
+export default function TextInput({ error, label, disabled, ...inputProps }: TextInputProps) {
   return (
     <View style={styles.outerWrapper}>
       <View style={styles.wrapper}>
         {label && <Text style={styles.label}>{label}</Text>}
         <RNTextInput
           {...inputProps}
-          style={[
-            styles.input,
-            error ? styles.error : null,
-            disabled && styles.inputDisabled,
-          ]}
+          style={[styles.input, error ? styles.error : null, disabled && styles.inputDisabled]}
         />
       </View>
       {error && <Text style={styles.errorText}>{error}</Text>}

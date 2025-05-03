@@ -1,10 +1,11 @@
-import { Image } from "react-native";
+/* eslint-disable no-undef */
+import { Image } from 'react-native';
 
-const userImageMarker = require("@/assets/images/person-marker-v2.png");
+const userImageMarker = require('@/assets/images/person-marker-v2.png');
 const userImageSource = Image.resolveAssetSource(userImageMarker);
 const userImageUrl = userImageSource.uri || userImageSource.uri;
 
-const binImageMarker = require("@/assets/images/bin-marker-v2.png");
+const binImageMarker = require('@/assets/images/bin-marker-v2.png');
 const binImageSource = Image.resolveAssetSource(binImageMarker);
 const binImageUrl = binImageSource.uri || binImageSource.uri;
 

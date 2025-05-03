@@ -1,9 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Toast from "react-native-toast-message";
+import { useMutation } from '@tanstack/react-query';
+import Toast from 'react-native-toast-message';
 
 export default function useMarkInvalidBin() {
   const markInvalidBin = useMutation<void, Error, number>({
-    mutationKey: ["markInvalidBin"],
+    mutationKey: ['markInvalidBin'],
+    // eslint-disable-next-line no-unused-vars
     mutationFn: async (binId) => {
       try {
         // const res = await fetch(
@@ -20,15 +21,15 @@ export default function useMarkInvalidBin() {
         const res = await Promise.resolve({ ok: true });
 
         if (!res.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
 
         Toast.show({
-          type: "success",
-          text1: "Kosz został oznaczony jako nieprawidłowy",
+          type: 'success',
+          text1: 'Kosz został oznaczony jako nieprawidłowy',
         });
       } catch (error) {
-        console.error("Error marking bin as invalid:", error);
+        console.error('Error marking bin as invalid:', error);
         throw error;
       }
     },

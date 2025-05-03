@@ -1,24 +1,33 @@
-import { isClerkRuntimeError, useSession, useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import Heading from "@/components/ui/Heading";
-import TextInput from "@/components/ui/input/TextInput";
-import TouchableOpacityButton from "@/components/ui/TouchableOpacityButton";
-import Text from "@/components/ui/Text";
-import { getColor } from "@/lib/getColor";
-import Toast from "react-native-toast-message";
-import { useAuthToken } from "@/store/authToken.atom";
+import { isClerkRuntimeError, useSession, useSignIn } from '@clerk/clerk-expo';
+import { Link, useRouter } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import Heading from '@/components/ui/Heading';
+import TextInput from '@/components/ui/input/TextInput';
+import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
+import Text from '@/components/ui/Text';
+import { getColor } from '@/lib/getColor';
+import Toast from 'react-native-toast-message';
+import { useAuthToken } from '@/store/authToken.atom';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: getColor("background"),
+    backgroundColor: getColor('background'),
     flex: 1,
     padding: 20,
   },
   link: {
-    color: getColor("primary"),
+    color: getColor('primary'),
     fontWeight: 600,
+  },
+  newAccount: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 3,
+    marginTop: 10,
+  },
+  clerkInfo: {
+    marginTop: 10,
   },
 });
 
@@ -30,8 +39,8 @@ export default function Page() {
   const [isPending, setPending] = useState(false);
   const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [emailAddress, setEmailAddress] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   useEffect(() => {
     if (!isLoaded || !session) return;
@@ -44,9 +53,9 @@ export default function Page() {
         setAuthToken(null);
       }
 
-      router.replace("/profile");
+      router.replace('/profile');
     })();
-  }, [isLoaded, session]);
+  }, [isLoaded, router, session, setAuthToken]);
 
   // Handle the submission of the sign-in form
   const onSignInPress = async () => {
@@ -63,7 +72,7 @@ export default function Page() {
 
       // If sign-in process is complete, set the created session as active
       // and redirect the user
-      if (signInAttempt.status === "complete") {
+      if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
@@ -71,19 +80,18 @@ export default function Page() {
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
 
-      if (isClerkRuntimeError(err) && err.code === "network_error") {
-        console.error("Network error occurred!");
+      if (isClerkRuntimeError(err) && err.code === 'network_error') {
+        console.error('Network error occurred!');
         Toast.show({
-          type: "error",
-          text1: "Błąd sieci",
-          text2: err.message ?? "Sprawdź połączenie z internetem",
+          type: 'error',
+          text1: 'Błąd sieci',
+          text2: err.message ?? 'Sprawdź połączenie z internetem',
         });
       } else {
         Toast.show({
-          type: "error",
-          text1: "Nie można zalogować",
-          text2:
-            (err as Error).message ?? "Sprawdź poprawność danych logowania",
+          type: 'error',
+          text1: 'Nie można zalogować',
+          text2: (err as Error).message ?? 'Sprawdź poprawność danych logowania',
         });
       }
     } finally {
@@ -116,15 +124,13 @@ export default function Page() {
         variant="primary"
         disabled={isPending}
       />
-      <View
-        style={{ display: "flex", flexDirection: "row", gap: 3, marginTop: 10 }}
-      >
+      <View style={styles.newAccount}>
         <Text>Nie masz jeszcze konta?</Text>
         <Link href="/sign-up">
           <Text style={styles.link}>Zarejestruj się</Text>
         </Link>
       </View>
-      <View style={{ marginTop: 10 }}>
+      <View style={styles.clerkInfo}>
         <Text>Bezpieczne logowanie i rejestracja z systemem Clerk.</Text>
       </View>
     </View>

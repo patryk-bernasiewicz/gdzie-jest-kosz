@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from 'react-native';
 
-import LeafletMap from "@/components/map/LeafletMap";
+import LeafletMap from '@/components/map/LeafletMap';
 
-import useLocation from "@/hooks/useLocation";
-import useUserProfile from "@/hooks/useUserProfile";
-import TokenDebug from "@/components/debug/TokenDebug";
+import useLocation from '@/feature/map/hooks/useLocation';
+import useUserProfile from '@/feature/user/hooks/useUserProfile';
+import TokenDebug from '@/components/debug/TokenDebug';
+import { getColor } from '@/lib/getColor';
 
 export default function HomeScreen() {
   const { location } = useLocation();
@@ -15,12 +16,12 @@ export default function HomeScreen() {
       <View style={styles.map}>
         <LeafletMap latitude={location?.[0]} longitude={location?.[1]} />
       </View>
-      {userProfile.data && userProfile.data.role === "admin" ? (
+      {userProfile.data && userProfile.data.role === 'admin' ? (
         <View style={styles.position}>
           <Text>
-            Current position:{"\n"}
-            {location ? `${location?.[0]}\n${location?.[1]}` : "none"}
-            {"\n"}
+            Current position:{'\n'}
+            {location ? `${location?.[0]}\n${location?.[1]}` : 'none'}
+            {'\n'}
           </Text>
         </View>
       ) : null}
@@ -31,31 +32,31 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
+    position: 'relative',
     flex: 1,
-    width: "100%",
+    width: '100%',
     padding: 0,
     margin: 0,
   },
   map: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     zIndex: 0,
-    backgroundColor: "lightblue",
-    width: "100%",
+    backgroundColor: getColor('mapBackground'),
+    width: '100%',
   },
   position: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 120,
     left: 20,
     zIndex: 1,
-    backgroundColor: "white",
+    backgroundColor: getColor('background'),
     borderWidth: 1,
-    borderColor: "#f00",
-    borderStyle: "solid",
+    borderColor: getColor('border'),
+    borderStyle: 'solid',
     padding: 10,
     borderRadius: 5,
   },
