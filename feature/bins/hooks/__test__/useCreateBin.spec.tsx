@@ -15,7 +15,7 @@ jest.mock('react-native-toast-message', () => ({
   default: { show: jest.fn() },
   show: jest.fn(),
 }));
-jest.mock('@/lib/api', () => ({
+jest.mock('@/utils/api', () => ({
   __esModule: true,
   default: {
     post: jest.fn(),
@@ -34,6 +34,7 @@ describe('useCreateBin hook', () => {
           refetchOnReconnect: false,
           refetchInterval: false,
           staleTime: Infinity,
+          gcTime: 0,
         },
         mutations: {
           retry: false,

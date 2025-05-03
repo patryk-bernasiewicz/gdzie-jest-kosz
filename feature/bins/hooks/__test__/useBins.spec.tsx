@@ -14,7 +14,7 @@ jest.mock('../../../map/hooks/useLocation', () => ({
 }));
 
 // Mock api (Axios instance)
-jest.mock('@/lib/api', () => ({
+jest.mock('@/utils/api', () => ({
   __esModule: true,
   default: {
     get: jest.fn(),
@@ -60,6 +60,7 @@ describe('useBins', () => {
         refetchOnMount: false,
         refetchOnReconnect: false,
         staleTime: Infinity,
+        gcTime: 0,
       },
     },
   });

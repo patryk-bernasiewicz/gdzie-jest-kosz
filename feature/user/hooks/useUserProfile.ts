@@ -1,11 +1,11 @@
 import { useUser } from '@clerk/clerk-expo';
-import { useQuery } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
 import api from '@/utils/api';
 
 import { User } from '../types';
 
-export default function useUserProfile() {
+export default function useUserProfile(options?: Partial<UseQueryOptions<User>>) {
   const { user } = useUser();
 
   return useQuery<User>({
@@ -21,5 +21,6 @@ export default function useUserProfile() {
     },
     enabled: Boolean(user),
     refetchInterval: 1000 * 60 * 15,
+    ...options,
   });
 }
