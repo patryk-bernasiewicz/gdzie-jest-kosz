@@ -1,8 +1,8 @@
-import useLocation from '../../../map/hooks/useLocation';
-import useBinsWithDistance from '../useBinsWithDistance';
 import { renderHook } from '@testing-library/react-native';
 
-import { Bin } from '@/types/Bin';
+import useLocation from '../../../map/hooks/useLocation';
+import { Bin } from '../../types';
+import useBinsWithDistance from '../useBinsWithDistance';
 
 jest.mock('../useLocation', () => ({
   __esModule: true,

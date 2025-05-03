@@ -72,8 +72,17 @@ export default [
       'react-native/no-color-literals': 'warn',
 
       // TypeScript rules
+      'no-unused-vars': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
 
       // Prettier rules
       'prettier/prettier': 'error',

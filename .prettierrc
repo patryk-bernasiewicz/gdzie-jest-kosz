@@ -9,7 +9,7 @@
   "endOfLine": "auto",
   "jsxBracketSameLine": false,
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["^@?\\\\w", "^@/"],
+  "importOrder": ["^@?\\\\w", "^@/", "^\\."],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

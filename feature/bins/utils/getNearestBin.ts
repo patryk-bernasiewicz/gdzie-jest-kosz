@@ -1,6 +1,6 @@
-import calculateDistance from './calculateDistance';
+import calculateDistance from '@/lib/calculateDistance';
 
-import { BinWithDistance } from '@/types/BinWithDistance';
+import { BinWithDistance } from '../types';
 
 export default function getNearestBin(
   bins: BinWithDistance[],

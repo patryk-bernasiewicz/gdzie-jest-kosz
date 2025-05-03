@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 
-import TokenDebug from '@/components/debug/TokenDebug';
-import LeafletMap from '@/components/map/LeafletMap';
+import TokenDebug from '@/feature/auth/components/debug/TokenDebug';
 import useLocation from '@/feature/map/hooks/useLocation';
+import LeafletMap from '@/feature/user/components/LeafletMap';
 import DebugUserLocation from '@/feature/user/components/debug/DebugUserLocation';
 import useUserProfile from '@/feature/user/hooks/useUserProfile';
 import { getColor } from '@/lib/getColor';

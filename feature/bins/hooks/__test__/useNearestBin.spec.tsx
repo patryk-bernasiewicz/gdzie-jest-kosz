@@ -1,9 +1,9 @@
-import useLocation from '../../../map/hooks/useLocation';
-import useNearestBin from '../useNearestBin';
 import { renderHook } from '@testing-library/react-native';
 
-import getNearestBin from '@/lib/getNearestBin';
-import { BinWithDistance } from '@/types/BinWithDistance';
+import getNearestBin from '@/feature/bins/utils/getNearestBin';
+
+import useLocation from '../../../map/hooks/useLocation';
+import useNearestBin from '../useNearestBin';
 
 // Mock useLocation
 jest.mock('../useLocation', () => ({

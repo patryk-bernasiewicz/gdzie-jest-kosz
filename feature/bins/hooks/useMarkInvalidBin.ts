@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 export default function useMarkInvalidBin() {
   const markInvalidBin = useMutation<void, Error, number>({
     mutationKey: ['markInvalidBin'],
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mutationFn: async (binId) => {
       try {
         // const res = await fetch(

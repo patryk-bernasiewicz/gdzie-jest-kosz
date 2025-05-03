@@ -8,8 +8,8 @@ import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
 import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
 import TextInput from '@/components/ui/input/TextInput';
+import { useAuthToken } from '@/feature/auth/store/authToken.atom';
 import { getColor } from '@/lib/getColor';
-import { useAuthToken } from '@/store/authToken.atom';
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -12,7 +12,7 @@ type MapContextMenuProps = {
   onCreateBin: () => void;
   disabled?: boolean;
   selectedBinIds?: number[];
-  onMarkInvalidBin: () => void;
+  onMarkInvalidBin: (binId: number) => void;
 };
 
 const defaultPadding = 30;
@@ -59,7 +59,7 @@ export default function MapContextMenu({
         {selectedBinIds?.map((binId) => (
           <Fragment key={binId}>
             <View style={styles.separator} />
-            <Text onPress={() => onMarkInvalidBin()}>Kosz ID: {binId} - nieaktualny?</Text>
+            <Text onPress={() => onMarkInvalidBin(binId)}>Kosz ID: {binId} - nieaktualny?</Text>
           </Fragment>
         ))}
       </View>

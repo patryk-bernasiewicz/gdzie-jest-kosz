@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 
 import useLocation from '@/feature/map/hooks/useLocation';
 import calculateDistance from '@/lib/calculateDistance';
-import { Bin } from '@/types/Bin';
-import { BinWithDistance } from '@/types/BinWithDistance';
+
+import { Bin, BinWithDistance } from '../types';
 
 export default function useBinsWithDistance(bins?: Bin[]) {
   const { location } = useLocation();

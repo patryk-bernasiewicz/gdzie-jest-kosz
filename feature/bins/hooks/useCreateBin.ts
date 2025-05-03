@@ -2,7 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
 import api from '@/lib/api';
-import type { Bin } from '@/types/Bin';
+
+import { Bin } from '../types';
 
 export default function useCreateBin() {
   const queryClient = useQueryClient();

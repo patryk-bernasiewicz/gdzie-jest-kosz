@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { fetchAndSetClerkToken } from '@/store/clerkToken.util';
+import { fetchAndSetClerkToken } from '@/feature/auth/store/clerkToken.util';
 
 const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
