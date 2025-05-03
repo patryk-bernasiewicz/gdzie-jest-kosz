@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { fetchAndSetClerkToken } from '@/store/clerkToken.util';
 
 const api = axios.create({

@@ -1,7 +1,8 @@
-import { User } from '@/types/User';
 import { useUser } from '@clerk/clerk-expo';
 import { useQuery } from '@tanstack/react-query';
+
 import api from '@/lib/api';
+import { User } from '@/types/User';
 
 export default function useUserProfile() {
   const { user } = useUser();

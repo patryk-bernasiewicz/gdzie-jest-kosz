@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
 import * as LocationService from 'expo-location';
-import { locationOffsetAtom } from '@/store/locationOffset.atom';
 import { useAtom } from 'jotai';
+import { useCallback, useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
+
+import { locationOffsetAtom } from '@/store/locationOffset.atom';
 
 const offsetMove = 20 / 111_111; // 20 meters in degrees for debug movement
 

@@ -2,14 +2,13 @@
  * @typedef {import('eslint').Linter.FlatConfig} FlatConfig
  * @typedef {import('@typescript-eslint/utils').TSESLint.Linter.Config} TSConfig
  */
-
 import eslint from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
-import reactPlugin from 'eslint-plugin-react';
-import reactNativePlugin from 'eslint-plugin-react-native';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import prettierPlugin from 'eslint-plugin-prettier';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import reactNativePlugin from 'eslint-plugin-react-native';
 
 /** @type {Array<FlatConfig>} */
 export default [

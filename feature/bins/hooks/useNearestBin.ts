@@ -1,7 +1,8 @@
+import useLocation from './useLocation';
+import { useMemo } from 'react';
+
 import getNearestBin from '@/lib/getNearestBin';
 import { BinWithDistance } from '@/types/BinWithDistance';
-import { useMemo } from 'react';
-import useLocation from './useLocation';
 import { WorldDirection } from '@/types/WorldDirection';
 
 export default function useNearestBin(bins?: BinWithDistance[] | null): {

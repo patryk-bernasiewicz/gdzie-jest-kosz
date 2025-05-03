@@ -1,17 +1,18 @@
+import MapContextMenu from './MapContextMenu';
+import NearestBinInformation from './NearestBinInformation';
+import BinsList from './debug/BinsList';
+import OffsetControls from './debug/OffsetControls';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { WebView } from 'react-native-webview';
+
 import useBins from '@/feature/bins/hooks/useBins';
 import useBinsWithDistance from '@/feature/bins/hooks/useBinsWithDistance';
-import createLeafletHtml from '@/lib/createLeafletHtml';
-import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, Pressable, Alert } from 'react-native';
-import { WebView } from 'react-native-webview';
-import BinsList from './debug/BinsList';
 import useCreateBin from '@/feature/bins/hooks/useCreateBin';
-import OffsetControls from './debug/OffsetControls';
-import NearestBinInformation from './NearestBinInformation';
-import { Bin } from '@/types/Bin';
-import MapContextMenu from './MapContextMenu';
 import useMarkInvalidBin from '@/feature/bins/hooks/useMarkInvalidBin';
 import useNearestBin from '@/feature/bins/hooks/useNearestBin';
+import createLeafletHtml from '@/lib/createLeafletHtml';
+import { Bin } from '@/types/Bin';
 
 type LeafletMapProps = {
   latitude?: number | null;

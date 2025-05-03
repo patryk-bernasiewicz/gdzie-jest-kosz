@@ -7,5 +7,9 @@
   "bracketSpacing": true,
   "arrowParens": "always",
   "endOfLine": "auto",
-  "jsxBracketSameLine": false
+  "jsxBracketSameLine": false,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^@?\\\\w", "^@/"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

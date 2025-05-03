@@ -1,7 +1,7 @@
-import React from 'react';
-import { renderHook, act } from '@testing-library/react-native';
 import useCreateBin from '../useCreateBin';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { act, renderHook } from '@testing-library/react-native';
+import React from 'react';
 
 // Mock dependencies
 jest.mock('@clerk/clerk-expo', () => ({

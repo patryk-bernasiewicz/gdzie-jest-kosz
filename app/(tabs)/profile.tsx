@@ -1,11 +1,12 @@
+import { SignedIn, SignedOut } from '@clerk/clerk-expo';
+import { Href, Link } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+
 import SignOutButton from '@/components/SignOutButton';
 import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
 import useUserProfile from '@/feature/user/hooks/useUserProfile';
 import { getColor } from '@/lib/getColor';
-import { SignedIn, SignedOut } from '@clerk/clerk-expo';
-import { Href, Link } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
 
 export default function ProfileScreen() {
   const userProfile = useUserProfile();

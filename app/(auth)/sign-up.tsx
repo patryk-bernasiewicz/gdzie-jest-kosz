@@ -1,14 +1,15 @@
+import { isClerkAPIResponseError, useSignUp } from '@clerk/clerk-expo';
+import { useSession } from '@clerk/clerk-expo';
+import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSignUp, isClerkAPIResponseError } from '@clerk/clerk-expo';
-import { Link, useRouter } from 'expo-router';
-import TextInput from '@/components/ui/input/TextInput';
-import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+
 import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
+import TextInput from '@/components/ui/input/TextInput';
 import { getColor } from '@/lib/getColor';
-import { useSession } from '@clerk/clerk-expo';
 import { useAuthToken } from '@/store/authToken.atom';
 
 const styles = StyleSheet.create({

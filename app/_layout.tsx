@@ -1,19 +1,19 @@
 /* eslint-disable no-undef */
+import { ClerkProvider } from '@clerk/clerk-expo';
+import { resourceCache } from '@clerk/clerk-expo/resource-cache';
+import { tokenCache } from '@clerk/clerk-expo/token-cache';
+import { plPL } from '@clerk/localizations/pl-PL';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { ClerkProvider } from '@clerk/clerk-expo';
-import { tokenCache } from '@clerk/clerk-expo/token-cache';
-import { plPL } from '@clerk/localizations/pl-PL';
 import Toast from 'react-native-toast-message';
-import { resourceCache } from '@clerk/clerk-expo/resource-cache';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

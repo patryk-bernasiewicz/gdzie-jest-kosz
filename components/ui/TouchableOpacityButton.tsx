@@ -1,8 +1,9 @@
 /* the variants here are used in a dynamic way, but eslint doesn't know that */
 /* eslint-disable react-native/no-color-literals, react-native/no-unused-styles */
-import { getColor } from '@/lib/getColor';
 import { ComponentProps } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+
+import { getColor } from '@/lib/getColor';
 
 const styles = StyleSheet.create({
   button: {

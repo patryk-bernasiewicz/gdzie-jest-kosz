@@ -1,13 +1,14 @@
 import { isClerkRuntimeError, useSession, useSignIn } from '@clerk/clerk-expo';
 import { Link, useRouter } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Heading from '@/components/ui/Heading';
-import TextInput from '@/components/ui/input/TextInput';
-import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
-import Text from '@/components/ui/Text';
-import { getColor } from '@/lib/getColor';
+import { StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+
+import Heading from '@/components/ui/Heading';
+import Text from '@/components/ui/Text';
+import TouchableOpacityButton from '@/components/ui/TouchableOpacityButton';
+import TextInput from '@/components/ui/input/TextInput';
+import { getColor } from '@/lib/getColor';
 import { useAuthToken } from '@/store/authToken.atom';
 
 const styles = StyleSheet.create({

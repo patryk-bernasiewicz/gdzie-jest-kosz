@@ -1,6 +1,6 @@
-import { getDefaultStore } from 'jotai';
 import { authTokenAtom } from './authToken.atom';
 import { getClerkInstance } from '@clerk/clerk-expo';
+import { getDefaultStore } from 'jotai';
 
 let cachedToken: string | null = null;
 let cachedAt: number | null = null;

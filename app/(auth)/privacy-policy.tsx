@@ -1,7 +1,8 @@
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
+
 import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
 import { getColor } from '@/lib/getColor';
-import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -1,5 +1,6 @@
-import { User } from '@/types/User';
 import { useMutation } from '@tanstack/react-query';
+
+import { User } from '@/types/User';
 
 export default function useUpsertUser() {
   const upsertUser = useMutation<User, Error, string>({

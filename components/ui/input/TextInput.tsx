@@ -1,6 +1,7 @@
-import { getColor } from '@/lib/getColor';
 import { ComponentProps } from 'react';
 import { TextInput as RNTextInput, StyleSheet, Text, View } from 'react-native';
+
+import { getColor } from '@/lib/getColor';
 
 type TextInputProps = ComponentProps<typeof RNTextInput> & {
   error?: string | null;

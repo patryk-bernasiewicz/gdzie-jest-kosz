@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { Bin } from '@/types/Bin';
-import api from '@/lib/api';
+
 import useLocation from '@/feature/map/hooks/useLocation';
+import api from '@/lib/api';
+import { Bin } from '@/types/Bin';
 
 const disableFetchingBins = false;
 

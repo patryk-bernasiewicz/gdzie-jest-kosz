@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import LeafletMap from '@/components/map/LeafletMap';
-
-import useLocation from '@/feature/map/hooks/useLocation';
-import useUserProfile from '@/feature/user/hooks/useUserProfile';
 import TokenDebug from '@/components/debug/TokenDebug';
+import LeafletMap from '@/components/map/LeafletMap';
+import useLocation from '@/feature/map/hooks/useLocation';
+import DebugUserLocation from '@/feature/user/components/debug/DebugUserLocation';
+import useUserProfile from '@/feature/user/hooks/useUserProfile';
 import { getColor } from '@/lib/getColor';
 
 export default function HomeScreen() {
@@ -16,15 +16,7 @@ export default function HomeScreen() {
       <View style={styles.map}>
         <LeafletMap latitude={location?.[0]} longitude={location?.[1]} />
       </View>
-      {userProfile.data && userProfile.data.role === 'admin' ? (
-        <View style={styles.position}>
-          <Text>
-            Current position:{'\n'}
-            {location ? `${location?.[0]}\n${location?.[1]}` : 'none'}
-            {'\n'}
-          </Text>
-        </View>
-      ) : null}
+      {userProfile.data && userProfile.data.role === 'admin' ? <DebugUserLocation /> : null}
       <TokenDebug />
     </View>
   );
@@ -47,17 +39,5 @@ const styles = StyleSheet.create({
     zIndex: 0,
     backgroundColor: getColor('mapBackground'),
     width: '100%',
-  },
-  position: {
-    position: 'absolute',
-    bottom: 120,
-    left: 20,
-    zIndex: 1,
-    backgroundColor: getColor('background'),
-    borderWidth: 1,
-    borderColor: getColor('border'),
-    borderStyle: 'solid',
-    padding: 10,
-    borderRadius: 5,
   },
 });
