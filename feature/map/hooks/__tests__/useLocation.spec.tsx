@@ -39,9 +39,7 @@ describe('useLocation', () => {
     (LocationService.watchPositionAsync as jest.Mock).mockResolvedValue({ remove: jest.fn() });
 
     const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
-    await act(async () => {
-      await waitFor(() => !result.current.isLoading);
-    });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.isLoading).toBe(false);
     expect(result.current.location).toEqual([1, 2]);
   });
@@ -51,9 +49,7 @@ describe('useLocation', () => {
       status: 'denied',
     });
     const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
-    await act(async () => {
-      await waitFor(() => !result.current.isLoading);
-    });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(Toast.show).toHaveBeenCalledWith(
       expect.objectContaining({ type: 'error', text1: expect.any(String) })
     );
@@ -66,9 +62,7 @@ describe('useLocation', () => {
     });
     (LocationService.getCurrentPositionAsync as jest.Mock).mockRejectedValue(new Error('fail'));
     const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
-    await act(async () => {
-      await waitFor(() => !result.current.isLoading);
-    });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(Toast.show).toHaveBeenCalledWith(
       expect.objectContaining({ type: 'error', text1: expect.any(String) })
     );
@@ -85,14 +79,12 @@ describe('useLocation', () => {
     (LocationService.watchPositionAsync as jest.Mock).mockResolvedValue({ remove: jest.fn() });
 
     const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
-    await waitFor(() => !result.current.isLoading);
-    act(() => {
-      result.current.moveOffsetNorth();
-      result.current.moveOffsetSouth();
-      result.current.moveOffsetEast();
-      result.current.moveOffsetWest();
-      result.current.resetOffset();
-    });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    result.current.moveOffsetNorth();
+    result.current.moveOffsetSouth();
+    result.current.moveOffsetEast();
+    result.current.moveOffsetWest();
+    result.current.resetOffset();
     // No assertion here, but ensures no errors are thrown
   });
 });

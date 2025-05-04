@@ -53,6 +53,8 @@ This document provides guidelines for GitHub Copilot to assist effectively in th
 - **Testing Framework**: Testing Library for React Native.
 - **Priority**: Focus on integration tests. Unit tests are required only for complex components.
 - **Coverage**: No specific testing coverage requirements.
+- **Additional notes for testing**:
+  - Copilot will not use `act` to await for async functions in tests. Instead, Copilot will use `await waitFor(() => {})`, and put assertions inside its callback to check the state or data.
 
 ---
 

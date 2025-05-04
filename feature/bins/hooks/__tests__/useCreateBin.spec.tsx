@@ -68,31 +68,28 @@ describe('useCreateBin hook', () => {
       Toast.show.mockClear();
       Toast.default.show.mockClear();
       const { result } = renderHook(() => useCreateBin(), { wrapper });
-      let data;
-      await act(async () => {
-        data = await result.current.mutateAsync([1, 2]);
-      });
+      const data = await result.current.mutateAsync([1, 2]);
       await waitFor(() => {
         expect(api.post).toHaveBeenCalledWith('/bins', { latitude: 1, longitude: 2 });
+        expect(data).toEqual({ id: 1, latitude: 1, longitude: 2 });
+        expect(Toast.show.mock.calls.length > 0 || Toast.default.show.mock.calls.length > 0).toBe(
+          true
+        );
+        const calls = [...Toast.show.mock.calls, ...Toast.default.show.mock.calls];
+        expect(calls.some((call) => call[0] && call[0].type === 'success')).toBe(true);
       });
-      expect(data).toEqual({ id: 1, latitude: 1, longitude: 2 });
-      expect(Toast.show.mock.calls.length > 0 || Toast.default.show.mock.calls.length > 0).toBe(
-        true
-      );
-      const calls = [...Toast.show.mock.calls, ...Toast.default.show.mock.calls];
-      expect(calls.some((call) => call[0] && call[0].type === 'success')).toBe(true);
     });
 
     it('throws error and logs when post fails', async () => {
       const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
       (api.post as jest.Mock).mockRejectedValue(new Error('Network response was not ok'));
       const { result } = renderHook(() => useCreateBin(), { wrapper });
-      await act(async () => {
-        await expect(result.current.mutateAsync([1, 2])).rejects.toThrow(
-          'Network response was not ok'
-        );
+      await expect(result.current.mutateAsync([1, 2])).rejects.toThrow(
+        'Network response was not ok'
+      );
+      await waitFor(() => {
+        expect(mockShowToast).not.toHaveBeenCalled();
       });
-      expect(mockShowToast).not.toHaveBeenCalled();
       errorSpy.mockRestore();
     });
 
@@ -100,10 +97,10 @@ describe('useCreateBin hook', () => {
       const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
       (api.post as jest.Mock).mockRejectedValue(new Error('fetch failed'));
       const { result } = renderHook(() => useCreateBin(), { wrapper });
-      await act(async () => {
-        await expect(result.current.mutateAsync([1, 2])).rejects.toThrow('fetch failed');
+      await expect(result.current.mutateAsync([1, 2])).rejects.toThrow('fetch failed');
+      await waitFor(() => {
+        expect(mockShowToast).not.toHaveBeenCalled();
       });
-      expect(mockShowToast).not.toHaveBeenCalled();
       errorSpy.mockRestore();
     });
 
@@ -111,10 +108,10 @@ describe('useCreateBin hook', () => {
       mockUseUser.mockReturnValue({ user: { id: 'abc-xyz' } });
       (api.post as jest.Mock).mockResolvedValue({ data: { id: 2, latitude: 3, longitude: 4 } });
       const { result } = renderHook(() => useCreateBin(), { wrapper });
-      await act(async () => {
-        await result.current.mutateAsync([3, 4]);
+      await result.current.mutateAsync([3, 4]);
+      await waitFor(() => {
+        expect(api.post).toHaveBeenCalledWith('/bins', { latitude: 3, longitude: 4 });
       });
-      expect(api.post).toHaveBeenCalledWith('/bins', { latitude: 3, longitude: 4 });
     });
   });
 });

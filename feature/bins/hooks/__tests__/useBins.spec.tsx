@@ -97,8 +97,9 @@ describe('useBins', () => {
 
     const { result } = renderHook(() => useBins(), { wrapper });
 
-    await waitFor(() => expect(result.current.data).toBeDefined());
-    expect(result.current.data).toEqual([{ id: 1, latitude: 52.1, longitude: 21.0 }]);
+    await waitFor(() => {
+      expect(result.current.data).toEqual([{ id: 1, latitude: 52.1, longitude: 21.0 }]);
+    });
     expect(api.get).toHaveBeenCalledWith(
       expect.stringContaining(`/bins/?latitude=52.1&longitude=21`)
     );
@@ -114,11 +115,11 @@ describe('useBins', () => {
     await waitFor(
       () => {
         expect(result.current.isError).toBe(true);
+        expect(result.current.error).toBeInstanceOf(Error);
+        expect(result.current.error?.message).toBe('Network response was not ok');
       },
       { timeout: 5000 }
     );
-    expect(result.current.error).toBeInstanceOf(Error);
-    expect(result.current.error?.message).toBe('Network response was not ok');
   });
 
   it('does not fetch if binsUrl is null', async () => {

@@ -8,7 +8,7 @@ import { User } from '../types';
 export default function useUserProfile(options?: Partial<UseQueryOptions<User>>) {
   const { user } = useUser();
 
-  return useQuery<User>({
+  const results = useQuery<User>({
     queryKey: ['userProfile'],
     queryFn: async () => {
       try {
@@ -23,4 +23,6 @@ export default function useUserProfile(options?: Partial<UseQueryOptions<User>>)
     refetchInterval: 1000 * 60 * 15,
     ...options,
   });
+
+  return results;
 }

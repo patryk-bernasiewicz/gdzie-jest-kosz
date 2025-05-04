@@ -44,44 +44,38 @@ describe('useUpsertUser', () => {
       json: async () => mockUser,
     });
     const { result } = renderHook(() => useUpsertUser(), { wrapper: wrapper as any });
-    act(() => {
-      result.current.mutate('session-123');
+    result.current.mutate('session-123');
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data).toEqual(mockUser);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/user/validate-session'),
+        expect.objectContaining({
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId: 'session-123' }),
+        })
+      );
     });
-    await act(async () => {
-      await waitFor(() => result.current.isSuccess && result.current.data !== undefined);
-    });
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('/user/validate-session'),
-      expect.objectContaining({
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: 'session-123' }),
-      })
-    );
-    expect(result.current.data).toEqual(mockUser);
   });
 
   it('handles network error', async () => {
     mockFetch.mockResolvedValueOnce({ ok: false });
     const { result } = renderHook(() => useUpsertUser(), { wrapper: wrapper as any });
-    act(() => {
-      result.current.mutate('session-err');
+    result.current.mutate('session-err');
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+      expect(result.current.error).toBeInstanceOf(Error);
     });
-    await act(async () => {
-      await waitFor(() => result.current.isError && result.current.error !== undefined);
-    });
-    expect(result.current.error).toBeInstanceOf(Error);
   });
 
   it('handles fetch exception', async () => {
     mockFetch.mockRejectedValueOnce(new Error('fetch failed'));
     const { result } = renderHook(() => useUpsertUser(), { wrapper: wrapper as any });
-    act(() => {
-      result.current.mutate('session-exc');
+    result.current.mutate('session-exc');
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+      expect(result.current.error).toBeInstanceOf(Error);
     });
-    await act(async () => {
-      await waitFor(() => result.current.isError && result.current.error !== undefined);
-    });
-    expect(result.current.error).toBeInstanceOf(Error);
   });
 });
