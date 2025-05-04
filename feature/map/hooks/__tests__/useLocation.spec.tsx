@@ -3,20 +3,30 @@ import * as LocationService from 'expo-location';
 import { Provider } from 'jotai';
 import Toast from 'react-native-toast-message';
 
-import locationOffsetAtom from '../../store/locationOffset.atom';
 import useLocation from '../useLocation';
 
 jest.mock('expo-location');
 jest.mock('react-native-toast-message', () => ({ show: jest.fn() }));
 
-const mockSetAtom = jest.fn();
-
-// Helper to wrap hook with Jotai Provider
-const wrapper = ({ children }: { children: React.ReactNode }) => <Provider>{children}</Provider>;
-
 describe('useLocation', () => {
+  let queryClient: import('@tanstack/react-query').QueryClient;
+  let QueryClientProvider: typeof import('@tanstack/react-query').QueryClientProvider;
+  let wrapperWithQuery: ({ children }: { children: React.ReactNode }) => JSX.Element;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    ({ QueryClientProvider } = require('@tanstack/react-query'));
+    queryClient = new (require('@tanstack/react-query').QueryClient)();
+    wrapperWithQuery = ({ children }: { children: React.ReactNode }) => (
+      <QueryClientProvider client={queryClient}>
+        <Provider>{children}</Provider>
+      </QueryClientProvider>
+    );
+  });
+
+  afterEach(async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
   });
 
   it('should request location permission and set location if granted', async () => {
@@ -28,7 +38,7 @@ describe('useLocation', () => {
     });
     (LocationService.watchPositionAsync as jest.Mock).mockResolvedValue({ remove: jest.fn() });
 
-    const { result } = renderHook(() => useLocation(), { wrapper: wrapper as any });
+    const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
     await act(async () => {
       await waitFor(() => !result.current.isLoading);
     });
@@ -40,7 +50,7 @@ describe('useLocation', () => {
     (LocationService.requestForegroundPermissionsAsync as jest.Mock).mockResolvedValue({
       status: 'denied',
     });
-    const { result } = renderHook(() => useLocation(), { wrapper: wrapper as any });
+    const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
     await act(async () => {
       await waitFor(() => !result.current.isLoading);
     });
@@ -55,7 +65,7 @@ describe('useLocation', () => {
       status: 'granted',
     });
     (LocationService.getCurrentPositionAsync as jest.Mock).mockRejectedValue(new Error('fail'));
-    const { result } = renderHook(() => useLocation(), { wrapper: wrapper as any });
+    const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
     await act(async () => {
       await waitFor(() => !result.current.isLoading);
     });
@@ -74,7 +84,7 @@ describe('useLocation', () => {
     });
     (LocationService.watchPositionAsync as jest.Mock).mockResolvedValue({ remove: jest.fn() });
 
-    const { result } = renderHook(() => useLocation(), { wrapper: wrapper as any });
+    const { result } = renderHook(() => useLocation(), { wrapper: wrapperWithQuery as any });
     await waitFor(() => !result.current.isLoading);
     act(() => {
       result.current.moveOffsetNorth();

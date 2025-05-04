@@ -17,8 +17,36 @@ jest.mock('../../../bins/utils/getNearestBin', () => ({
 }));
 
 describe('useNearestBin', () => {
+  let queryClient: import('@tanstack/react-query').QueryClient;
+  let QueryClientProvider: typeof import('@tanstack/react-query').QueryClientProvider;
+  let wrapper: ({ children }: { children: React.ReactNode }) => JSX.Element;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    ({ QueryClientProvider } = require('@tanstack/react-query'));
+    queryClient = new (require('@tanstack/react-query').QueryClient)({
+      defaultOptions: {
+        queries: {
+          retry: false,
+          refetchOnWindowFocus: false,
+          refetchOnReconnect: false,
+          refetchInterval: false,
+          staleTime: Infinity,
+          gcTime: 0,
+        },
+        mutations: {
+          retry: false,
+        },
+      },
+    });
+    wrapper = ({ children }: { children: React.ReactNode }) => (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
+  });
+
+  afterEach(async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
   });
 
   function mockLocation(location: [number, number] | null) {
@@ -27,7 +55,7 @@ describe('useNearestBin', () => {
 
   it('returns nulls if location is not available', () => {
     mockLocation(null);
-    const { result } = renderHook(() => useNearestBin([]));
+    const { result } = renderHook(() => useNearestBin([]), { wrapper });
     expect(result.current).toEqual({
       nearestBin: null,
       nearestBinDirection: null,
@@ -36,7 +64,7 @@ describe('useNearestBin', () => {
 
   it('returns nulls if bins array is empty', () => {
     mockLocation([52.1, 21.0]);
-    const { result } = renderHook(() => useNearestBin([]));
+    const { result } = renderHook(() => useNearestBin([]), { wrapper });
     expect(result.current).toEqual({
       nearestBin: null,
       nearestBinDirection: null,
@@ -45,7 +73,7 @@ describe('useNearestBin', () => {
 
   it('returns nulls if bins is undefined', () => {
     mockLocation([52.1, 21.0]);
-    const { result } = renderHook(() => useNearestBin(undefined));
+    const { result } = renderHook(() => useNearestBin(undefined), { wrapper });
     expect(result.current).toEqual({
       nearestBin: null,
       nearestBinDirection: null,
@@ -77,7 +105,7 @@ describe('useNearestBin', () => {
       },
     ];
     (getNearestBin as jest.Mock).mockReturnValue(bins[0]);
-    const { result } = renderHook(() => useNearestBin(bins));
+    const { result } = renderHook(() => useNearestBin(bins), { wrapper });
     expect(result.current).toEqual({
       nearestBin: bins[0],
       nearestBinDirection: 'northeast', // 52.1005 > 52.1, 21.0005 > 21.0
@@ -100,7 +128,7 @@ describe('useNearestBin', () => {
       },
     ];
     (getNearestBin as jest.Mock).mockReturnValue(null);
-    const { result } = renderHook(() => useNearestBin(bins));
+    const { result } = renderHook(() => useNearestBin(bins), { wrapper });
     expect(result.current).toEqual({
       nearestBin: null,
       nearestBinDirection: null,
@@ -157,7 +185,7 @@ describe('useNearestBin', () => {
     ];
     for (const { bin, expected } of testCases) {
       (getNearestBin as jest.Mock).mockReturnValue(bin);
-      const { result } = renderHook(() => useNearestBin([bin]));
+      const { result } = renderHook(() => useNearestBin([bin]), { wrapper });
       expect(result.current.nearestBinDirection).toBe(expected);
     }
   });

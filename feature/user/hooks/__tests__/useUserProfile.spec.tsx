@@ -32,15 +32,15 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 describe('useUserProfile', () => {
-  afterAll(async () => {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    jest.clearAllMocks();
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     queryClient.clear();
+  });
+
+  afterEach(async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    jest.clearAllMocks();
   });
 
   it('fetches user profile when user is present', async () => {
@@ -49,15 +49,11 @@ describe('useUserProfile', () => {
 
     const { result } = renderHook(() => useUserProfile(), { wrapper: wrapper as any });
     await act(async () => {
-      await waitFor(() => result.current.isSuccess && result.current.data !== undefined);
+      await waitFor(() => result.current.isSuccess && result.current.data !== undefined, {
+        timeout: 3000,
+      });
     });
     expect(api.get).toHaveBeenCalledWith('/user/me');
-    // Defensive: print result for debugging if test fails
-    if (result.current.data === undefined) {
-      // eslint-disable-next-line no-console
-      console.error('Test debug: result.current', result.current);
-    }
-    expect(result.current.data).toBeDefined();
     expect(result.current.data).toEqual({ id: '123', name: 'Test User' });
   });
 

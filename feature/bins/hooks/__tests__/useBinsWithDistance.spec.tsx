@@ -34,15 +34,32 @@ function mockUseLocation({
 }
 
 describe('useBinsWithDistance', () => {
+  let queryClient: import('@tanstack/react-query').QueryClient;
+  let QueryClientProvider: typeof import('@tanstack/react-query').QueryClientProvider;
+  let wrapper: ({ children }: { children: React.ReactNode }) => JSX.Element;
+
+  beforeEach(() => {
+    // Dynamically import to avoid import cycles and only load if needed
+    ({ QueryClientProvider } = require('@tanstack/react-query'));
+    queryClient = new (require('@tanstack/react-query').QueryClient)();
+    wrapper = ({ children }: { children: React.ReactNode }) => (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
+  });
+
+  afterEach(async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+  });
   it('returns null if location is not available', () => {
     mockUseLocation({ location: null });
-    const { result } = renderHook(() => useBinsWithDistance([]));
+    const { result } = renderHook(() => useBinsWithDistance([]), { wrapper });
     expect(result.current).toBeNull();
   });
 
   it('returns an empty array if bins is empty and location is available', () => {
     mockUseLocation({ location: [52.1, 21.0] });
-    const { result } = renderHook(() => useBinsWithDistance([]));
+    const { result } = renderHook(() => useBinsWithDistance([]), { wrapper });
     expect(result.current).toEqual([]);
   });
 
@@ -52,7 +69,7 @@ describe('useBinsWithDistance', () => {
       { id: 1, latitude: 52.1005, longitude: 21.0005 } as Bin,
       { id: 2, latitude: 53.0, longitude: 22.0 } as Bin,
     ];
-    const { result } = renderHook(() => useBinsWithDistance(bins));
+    const { result } = renderHook(() => useBinsWithDistance(bins), { wrapper });
     expect(result.current).toHaveLength(2);
     expect(result.current?.[0].distance).not.toBeNull();
     expect(result.current?.[1].distance).toBeNull();
@@ -60,7 +77,7 @@ describe('useBinsWithDistance', () => {
 
   it('handles null bins correctly', () => {
     mockUseLocation({ location: [52.1, 21.0] });
-    const { result } = renderHook(() => useBinsWithDistance(undefined));
+    const { result } = renderHook(() => useBinsWithDistance(undefined), { wrapper });
     expect(result.current).toEqual([]);
   });
 
@@ -68,7 +85,7 @@ describe('useBinsWithDistance', () => {
     // User is at [52.1, 21.0], offset moves them north by 0.001
     mockUseLocation({ location: [52.101, 21.0] });
     const bins: Bin[] = [{ id: 1, latitude: 52.1005, longitude: 21.0 } as Bin];
-    const { result } = renderHook(() => useBinsWithDistance(bins));
+    const { result } = renderHook(() => useBinsWithDistance(bins), { wrapper });
     // The distance should be small but not zero
     expect(result.current?.[0].distance).toBeGreaterThan(0);
   });
@@ -79,7 +96,7 @@ describe('useBinsWithDistance', () => {
       { id: 1, latitude: undefined as any, longitude: 21.0 } as Bin,
       { id: 2, latitude: 52.1, longitude: undefined as any } as Bin,
     ];
-    const { result } = renderHook(() => useBinsWithDistance(bins));
+    const { result } = renderHook(() => useBinsWithDistance(bins), { wrapper });
     expect(result.current?.[0].distance).toBeNull();
     expect(result.current?.[1].distance).toBeNull();
   });
@@ -87,7 +104,7 @@ describe('useBinsWithDistance', () => {
   it('returns zero distance for bin at user location', () => {
     mockUseLocation({ location: [52.1, 21.0] });
     const bins: Bin[] = [{ id: 1, latitude: 52.1, longitude: 21.0 } as Bin];
-    const { result } = renderHook(() => useBinsWithDistance(bins));
+    const { result } = renderHook(() => useBinsWithDistance(bins), { wrapper });
     expect(result.current?.[0].distance).toBe(0);
   });
 });

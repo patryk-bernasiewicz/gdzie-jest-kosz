@@ -27,16 +27,15 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 describe('useUpsertUser', () => {
-  afterAll(async () => {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    jest.clearAllMocks();
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     queryClient.clear();
     mockFetch.mockReset();
+  });
+
+  afterEach(async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
   });
 
   it('successfully upserts user', async () => {

@@ -53,11 +53,11 @@ describe('useCreateBin hook', () => {
       mockUseUser.mockReturnValue({ user: { id: 'clerk-123' } });
     });
 
-    afterEach(() => {
+    afterEach(async () => {
       jest.restoreAllMocks();
       if (queryClient) {
+        await queryClient.cancelQueries();
         queryClient.clear();
-        queryClient.cancelQueries();
       }
     });
 

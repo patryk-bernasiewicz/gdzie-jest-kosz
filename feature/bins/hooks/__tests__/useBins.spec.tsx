@@ -51,26 +51,31 @@ function mockUseLocation({
 }
 
 describe('useBins', () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        refetchOnWindowFocus: false,
-        refetchIntervalInBackground: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        staleTime: Infinity,
-        gcTime: 0,
-      },
-    },
-  });
-
-  const wrapper = ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  let queryClient: QueryClient;
+  let wrapper: ({ children }: { children: ReactNode }) => JSX.Element;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+          refetchOnWindowFocus: false,
+          refetchIntervalInBackground: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
+          staleTime: Infinity,
+          gcTime: 0,
+        },
+      },
+    });
+    wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
+  });
+
+  afterEach(async () => {
+    await queryClient.cancelQueries();
     queryClient.clear();
   });
 
