@@ -1,11 +1,13 @@
 import { useUser } from '@clerk/clerk-expo';
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { UseQueryOptions, UseQueryResult, useQuery } from '@tanstack/react-query';
 
 import api from '@/utils/api';
 
 import { User } from '../types';
 
-export default function useUserProfile(options?: Partial<UseQueryOptions<User>>) {
+export default function useUserProfile(
+  options?: Partial<UseQueryOptions<User>>
+): UseQueryResult<User> {
   const { user } = useUser();
 
   const results = useQuery<User>({

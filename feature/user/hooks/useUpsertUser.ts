@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { UseMutationResult, useMutation } from '@tanstack/react-query';
 
 import { User } from '../types';
 
-export default function useUpsertUser() {
+export default function useUpsertUser(): UseMutationResult<User, Error, string> {
   const upsertUser = useMutation<User, Error, string>({
     mutationFn: async (sessionId: string) => {
       try {
