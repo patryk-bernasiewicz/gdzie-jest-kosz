@@ -1,10 +1,8 @@
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect } from 'react';
 import WebView from 'react-native-webview';
 
 import useBins from '@/feature/bins/hooks/useBins';
 import useBinsWithDistance from '@/feature/bins/hooks/useBinsWithDistance';
-
-const throttleDelay = 5000;
 
 /**
  * Custom hook that injects JavaScript into a WebView when the bins data is updated
@@ -13,19 +11,13 @@ const throttleDelay = 5000;
  * @return {void}
  */
 export default function useInjectBins(
-  mapViewRef: RefObject<WebView>,
+  mapViewRef: RefObject<WebView | null>,
   isHtmlReady?: boolean | null
 ): void {
   const bins = useBins();
   const binsWithDistance = useBinsWithDistance(bins.data);
-  const lastUpdateTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (lastUpdateTimeRef.current && Date.now() - lastUpdateTimeRef.current < throttleDelay) {
-      return;
-    }
-    lastUpdateTimeRef.current = Date.now();
-
     if (!mapViewRef.current || !isHtmlReady || !binsWithDistance) {
       return;
     }

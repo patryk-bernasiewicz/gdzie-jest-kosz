@@ -1,7 +1,6 @@
 import { getClerkInstance } from '@clerk/clerk-expo';
-import { getDefaultStore } from 'jotai';
 
-import { authTokenAtom } from './authToken.atom';
+import { useAuthToken } from '../hooks/useAuthToken';
 
 let cachedToken: string | null = null;
 let cachedAt: number | null = null;
@@ -28,7 +27,7 @@ export async function fetchAndSetClerkToken() {
         })) || null;
       cachedToken = token;
       cachedAt = Date.now();
-      getDefaultStore().set(authTokenAtom, token);
+      useAuthToken.setState({ token });
     }
 
     if (token) {

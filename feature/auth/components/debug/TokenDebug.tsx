@@ -1,13 +1,14 @@
 import { StyleSheet, View } from 'react-native';
 
-import { useAuthToken } from '@/feature/auth/store/authToken.atom';
 import Text from '@/ui/components/Text';
 import useDevMode from '@/ui/hooks/useDevMode';
 import getColor from '@/ui/utils/getColor';
 
+import { useAuthToken } from '../../hooks/useAuthToken';
+
 export default function TokenDebug() {
-  const [token] = useAuthToken();
   const isDevMode = useDevMode();
+  const { token } = useAuthToken();
 
   if (!isDevMode) {
     return null;
@@ -16,7 +17,7 @@ export default function TokenDebug() {
   return (
     <View style={styles.debug} onTouchEnd={() => console.log(`Token: ${token}`)}>
       <Text>Token:</Text>
-      <Text>{token?.length ? `${token.slice(0, 13)}...` : '-'}</Text>
+      <Text>{token ? `${token.slice(0, 5)}...` : 'not found'}</Text>
     </View>
   );
 }

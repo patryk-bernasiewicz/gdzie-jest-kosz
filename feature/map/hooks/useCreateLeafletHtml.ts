@@ -16,6 +16,7 @@ export default function useCreateLeafletHtml(
   const [html, setHtml] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('useCreateLeafletHtml', !!html, latitude, longitude);
     if (html || !latitude || !longitude) {
       return;
     }

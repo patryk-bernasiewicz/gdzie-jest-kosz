@@ -1,8 +1,9 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import useNearestBin from '@/feature/bins/hooks/useNearestBin';
 import { BinWithDistance } from '@/feature/bins/types';
 import useUserProfile from '@/feature/user/hooks/useUserProfile';
+import Text from '@/ui/components/Text';
 import getColor from '@/ui/utils/getColor';
 
 type BinsListProps = {

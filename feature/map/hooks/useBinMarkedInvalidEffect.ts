@@ -10,7 +10,7 @@ import WebView from 'react-native-webview';
  * @returns {void}
  */
 export default function useBinMarkedInvalidEffect(
-  mapViewRef: RefObject<WebView>,
+  mapViewRef: RefObject<WebView | null>,
   isBinMarkedInvalid: boolean | null,
   callback?: () => void
 ): void {

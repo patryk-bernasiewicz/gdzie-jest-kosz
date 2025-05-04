@@ -2,7 +2,7 @@
   "expo": {
     "name": "gdzie-jest-kosz",
     "slug": "gdzie-jest-kosz",
-    "version": "1.0.0",
+    "version": "DEV-0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -32,7 +32,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

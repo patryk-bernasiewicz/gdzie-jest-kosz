@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-import { useAuthToken } from '@/feature/auth/store/authToken.atom';
 import Heading from '@/ui/components/Heading';
 import Text from '@/ui/components/Text';
 import TouchableOpacityButton from '@/ui/components/TouchableOpacityButton';
@@ -14,7 +13,6 @@ import getColor from '@/ui/utils/getColor';
 export default function SignInScreen() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const { session } = useSession();
-  const [, setAuthToken] = useAuthToken();
 
   const [isPending, setPending] = useState(false);
   const router = useRouter();
@@ -27,15 +25,11 @@ export default function SignInScreen() {
 
     (async () => {
       const token = await session.getToken();
-      if (token) {
-        setAuthToken(token);
-      } else {
-        setAuthToken(null);
-      }
+      console.log('Token:', token);
 
       router.replace('/profile');
     })();
-  }, [isLoaded, router, session, setAuthToken]);
+  }, [isLoaded, router, session]);
 
   // Handle the submission of the sign-in form
   const onSignInPress = async () => {

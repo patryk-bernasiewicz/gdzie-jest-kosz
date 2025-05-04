@@ -12,12 +12,10 @@ import TextInput from '@/ui/components/input/TextInput';
 import getColor from '@/ui/utils/getColor';
 
 import { errorTranslations } from '../constants/errorTranslations';
-import { useAuthToken } from '../store/authToken.atom';
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const { session } = useSession();
-  const [, setAuthToken] = useAuthToken();
   const [isPending, setPending] = useState(false);
   const router = useRouter();
 
@@ -36,15 +34,12 @@ export default function SignUpScreen() {
 
     (async () => {
       const token = await session.getToken();
-      if (token) {
-        setAuthToken(token);
-      } else {
-        setAuthToken(null);
-      }
+
+      console.log('Token:', token);
 
       router.replace('/profile');
     })();
-  }, [isLoaded, session, setAuthToken, router]);
+  }, [isLoaded, session, router]);
 
   // Handle submission of sign-up form
   const onSignUpPress = async () => {

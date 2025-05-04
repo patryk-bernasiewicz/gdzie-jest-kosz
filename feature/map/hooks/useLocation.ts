@@ -1,11 +1,31 @@
 import * as LocationService from 'expo-location';
-import { useAtom } from 'jotai';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
-
-import locationOffsetAtom from '../store/locationOffset.atom';
+import { create } from 'zustand';
 
 const offsetMove = 20 / 111_111; // 20 meters in degrees for debug movement
+
+type LocationOffsetStore = {
+  location: [number, number] | null;
+  setLocation: (location: [number, number]) => void;
+  offset: [number, number];
+  moveSouth: () => void;
+  moveNorth: () => void;
+  moveEast: () => void;
+  moveWest: () => void;
+  resetOffset: () => void;
+};
+
+const useLocationOffsetStore = create<LocationOffsetStore>((set) => ({
+  location: [0, 0],
+  setLocation: (location: [number, number]) => set({ location }),
+  offset: [0, 0],
+  moveSouth: () => set((state) => ({ offset: [state.offset[0] - offsetMove, state.offset[1]] })),
+  moveNorth: () => set((state) => ({ offset: [state.offset[0] + offsetMove, state.offset[1]] })),
+  moveEast: () => set((state) => ({ offset: [state.offset[0], state.offset[1] + offsetMove] })),
+  moveWest: () => set((state) => ({ offset: [state.offset[0], state.offset[1] - offsetMove] })),
+  resetOffset: () => set({ offset: [0, 0] }),
+}));
 
 type UseLocationReturnType = {
   isLoading: boolean;
@@ -18,9 +38,9 @@ type UseLocationReturnType = {
 };
 
 export default function useLocation(): UseLocationReturnType {
-  const [location, setLocation] = useState<[number, number] | null>(null);
-  const [offset, setOffset] = useAtom(locationOffsetAtom);
   const [isLoading, setLoading] = useState(true);
+  const { location, setLocation, offset, moveSouth, moveNorth, moveEast, moveWest, resetOffset } =
+    useLocationOffsetStore();
 
   useEffect(() => {
     let subscription: LocationService.LocationSubscription | null = null;
@@ -68,27 +88,7 @@ export default function useLocation(): UseLocationReturnType {
       subscription?.remove();
       subscription = null;
     };
-  }, []);
-
-  const moveOffsetSouth = useCallback(() => {
-    setOffset((prevOffset) => [prevOffset[0] - offsetMove, prevOffset[1]]);
-  }, [setOffset]);
-
-  const moveOffsetNorth = useCallback(() => {
-    setOffset((prevOffset) => [prevOffset[0] + offsetMove, prevOffset[1]]);
-  }, [setOffset]);
-
-  const moveOffsetEast = useCallback(() => {
-    setOffset((prevOffset) => [prevOffset[0], prevOffset[1] + offsetMove]);
-  }, [setOffset]);
-
-  const moveOffsetWest = useCallback(() => {
-    setOffset((prevOffset) => [prevOffset[0], prevOffset[1] - offsetMove]);
-  }, [setOffset]);
-
-  const resetOffset = useCallback(() => {
-    setOffset([0, 0]);
-  }, [setOffset]);
+  }, [setLocation]);
 
   const locationWithOffset = (
     location && offset
@@ -99,10 +99,10 @@ export default function useLocation(): UseLocationReturnType {
   return {
     isLoading,
     location: locationWithOffset,
-    moveOffsetSouth,
-    moveOffsetNorth,
-    moveOffsetEast,
-    moveOffsetWest,
+    moveOffsetSouth: moveSouth,
+    moveOffsetNorth: moveNorth,
+    moveOffsetEast: moveEast,
+    moveOffsetWest: moveWest,
     resetOffset,
   };
 }

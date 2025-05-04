@@ -1,6 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import * as LocationService from 'expo-location';
-import { Provider } from 'jotai';
 import Toast from 'react-native-toast-message';
 
 import useLocation from '../useLocation';
@@ -18,9 +17,7 @@ describe('useLocation', () => {
     ({ QueryClientProvider } = require('@tanstack/react-query'));
     queryClient = new (require('@tanstack/react-query').QueryClient)();
     wrapperWithQuery = ({ children }: { children: React.ReactNode }) => (
-      <QueryClientProvider client={queryClient}>
-        <Provider>{children}</Provider>
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
   });
 

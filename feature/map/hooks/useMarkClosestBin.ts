@@ -6,7 +6,7 @@ import useBinsWithDistance from '@/feature/bins/hooks/useBinsWithDistance';
 import useNearestBin from '@/feature/bins/hooks/useNearestBin';
 
 export default function useMarkClosestBin(
-  mapViewRef: RefObject<WebView>,
+  mapViewRef: RefObject<WebView | null>,
   isHtmlReady?: boolean | null
 ): void {
   const bins = useBins();

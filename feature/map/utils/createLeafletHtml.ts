@@ -188,7 +188,7 @@ export default function createLeafletHtml(
         
         // -- Update bins
         window.updateBins = function(bins) {
-          //loggerInstance.log('Bins updated: ' + JSON.stringify(bins, null, 2));
+          loggerInstance.log('Bins updated: ' + JSON.stringify(bins, null, 2));
 
           // remove far away bins
           var binsToRemove = binMarkers.filter((marker) => {
