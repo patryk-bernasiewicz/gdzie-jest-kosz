@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { WebView, WebViewMessageEvent } from 'react-native-webview';
 
 import useBins from '@/feature/bins/hooks/useBins';
 import useBinsWithDistance from '@/feature/bins/hooks/useBinsWithDistance';
@@ -79,6 +79,26 @@ export default function LeafletMap({ latitude, longitude }: LeafletMapProps) {
         style: 'cancel',
       },
     ]);
+  };
+
+  const handleWebViewMessage = (event: WebViewMessageEvent) => {
+    try {
+      const data = JSON.parse(event.nativeEvent.data);
+      if (data.type === 'maploaded') {
+        setMapLoaded(true);
+      } else if (data.type === 'log') {
+        logWebViewMessage('event in WebView: ', data.message);
+      } else if (data.type === 'contextmenu') {
+        setContextMenuPos(data.screenPos);
+        setSelectedPos([data.latlng.lat, data.latlng.lng]);
+        if (data.selectedBins) {
+          setMapSelectedBins(data.selectedBins);
+        }
+      }
+      logWebViewMessage('event in WebView: ', data);
+    } catch (error) {
+      console.error('Failed to parse WebView message:', error);
+    }
   };
 
   useEffect(() => {
@@ -173,25 +193,7 @@ export default function LeafletMap({ latitude, longitude }: LeafletMapProps) {
             style={styles.webview}
             javaScriptEnabled
             ref={mapViewRef}
-            onMessage={(event) => {
-              try {
-                const data = JSON.parse(event.nativeEvent.data);
-                if (data.type === 'maploaded') {
-                  setMapLoaded(true);
-                } else if (data.type === 'log') {
-                  logWebViewMessage('event in WebView: ', data.message);
-                } else if (data.type === 'contextmenu') {
-                  setContextMenuPos(data.screenPos);
-                  setSelectedPos([data.latlng.lat, data.latlng.lng]);
-                  if (data.selectedBins) {
-                    setMapSelectedBins(data.selectedBins);
-                  }
-                }
-                logWebViewMessage('event in WebView: ', data);
-              } catch (error) {
-                console.error('Failed to parse WebView message:', error);
-              }
-            }}
+            onMessage={handleWebViewMessage}
             webviewDebuggingEnabled
           />
         )}
