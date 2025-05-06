@@ -1,6 +1,7 @@
-import { Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 
 import Heading from '@/ui/components/Heading';
+import ScreenWrapper from '@/ui/components/ScreenWrapper';
 import Text from '@/ui/components/Text';
 import getColor from '@/ui/utils/getColor';
 
@@ -29,7 +30,7 @@ export default function PrivacyPolicyScreen() {
   };
 
   return (
-    <ScrollView style={styles.wrapper}>
+    <ScreenWrapper>
       <Heading text="Polityka prywatności" />
       <Text style={styles.heading}>1. Administrator Danych</Text>
       <Text>
@@ -153,16 +154,11 @@ export default function PrivacyPolicyScreen() {
           patryk.bernasiewicz@gmail.com
         </Text>
       </Text>
-    </ScrollView>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: getColor('background'),
-    flex: 1,
-    padding: 20,
-  },
   heading: {
     fontSize: 18,
     fontWeight: 'bold',

@@ -1,7 +1,8 @@
 import * as LocationService from 'expo-location';
 import { useEffect, useState } from 'react';
-import Toast from 'react-native-toast-message';
 import { create } from 'zustand';
+
+import { handleApiError, showErrorToast } from '@/ui/utils/toastNotifications';
 
 const offsetMove = 20 / 111_111; // 20 meters in degrees for debug movement
 
@@ -50,12 +51,10 @@ export default function useLocation(): UseLocationReturnType {
         const { status } = await LocationService.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
           console.log('Permission to access location was denied');
-          Toast.show({
-            type: 'error',
-            text1: 'Brak dostępu do lokalizacji.',
-            text2: 'Proszę sprawdzić ustawienia aplikacji.',
-            position: 'top',
-          });
+          showErrorToast(
+            'Brak dostępu do lokalizacji.',
+            'Proszę sprawdzić ustawienia aplikacji i udzielić uprawnień do lokalizacji.'
+          );
           setLoading(false);
           return;
         }
@@ -72,12 +71,10 @@ export default function useLocation(): UseLocationReturnType {
         const { latitude, longitude } = location.coords;
         setLocation([latitude, longitude]);
       } catch (error) {
-        console.error('Unable to establish user location.', error);
-        Toast.show({
-          type: 'error',
-          text1: 'Nie można ustalić lokalizacji użytkownika.',
-          text2: 'Proszę sprawdzić ustawienia lokalizacji.',
-          position: 'top',
+        handleApiError(error, {
+          context: 'ustalania lokalizacji',
+          defaultErrorTitle: 'Błąd lokalizacji',
+          defaultErrorMessage: 'Nie udało się ustalić Twojej lokalizacji. Sprawdź ustawienia GPS.',
         });
       } finally {
         setLoading(false);

@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-expo';
-import { Href, Link } from 'expo-router';
+import { Link } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import SignOutButton from '@/feature/auth/components/SignOutButton';
@@ -14,7 +14,7 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <Heading text="Gdzie jest kosz" />
-      <Link href="/(auth)/privacy-policy">
+      <Link href="/(tabs)/privacy-policy">
         <Text style={styles.link}>Polityka prywatności</Text>
       </Link>
       <SignedIn>
@@ -40,12 +40,12 @@ export default function ProfileScreen() {
       </SignedIn>
       <SignedOut>
         <View style={styles.signInWrapper}>
-          <Link href={`/(auth)/sign-in` as Href}>
+          <Link href={'/(tabs)/sign-in'}>
             <Text style={styles.link}>Zaloguj się</Text>
           </Link>
         </View>
         <View style={styles.signUpWrapper}>
-          <Link href={`/(auth)/sign-up` as Href}>
+          <Link href={'/(tabs)/sign-up'}>
             <Text style={styles.link}>Utwórz konto</Text>
           </Link>
         </View>

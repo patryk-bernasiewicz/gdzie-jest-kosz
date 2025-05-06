@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 
+import TokenDebug from '@/feature/auth/components/debug/TokenDebug';
 import useBins from '@/feature/bins/hooks/useBins';
 import useBinsWithDistance from '@/feature/bins/hooks/useBinsWithDistance';
 import useCreateBin from '@/feature/bins/hooks/useCreateBin';
@@ -19,6 +20,7 @@ import useMarkClosestBin from '../hooks/useMarkClosestBin';
 import MapContextMenu from './MapContextMenu';
 import NearestBinInformation from './NearestBinInformation';
 import BinsList from './debug/BinsList';
+import DebugUserLocation from './debug/DebugUserLocation';
 import OffsetControls from './debug/OffsetControls';
 
 type LeafletMapProps = {
@@ -157,6 +159,8 @@ export default function LeafletMap({ latitude, longitude }: LeafletMapProps) {
         <DebugOnly>
           <BinsList bins={binsWithDistance} />
           <OffsetControls />
+          <DebugUserLocation />
+          <TokenDebug />
         </DebugOnly>
       </View>
     </Pressable>

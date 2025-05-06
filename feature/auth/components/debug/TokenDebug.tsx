@@ -17,7 +17,7 @@ export default function TokenDebug() {
   return (
     <View style={styles.debug} onTouchEnd={() => console.log(`Token: ${token}`)}>
       <Text>Token:</Text>
-      <Text>{token ? `${token.slice(0, 5)}...` : 'not found'}</Text>
+      <Text>{token ? `${token.slice(0, 12)}...` : 'not found'}</Text>
     </View>
   );
 }
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 20,
     position: 'absolute',
-    top: 110,
-    right: 20,
+    top: 105,
+    right: 8,
   },
 });

@@ -2,13 +2,14 @@ import { isClerkRuntimeError, useSession, useSignIn } from '@clerk/clerk-expo';
 import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Toast from 'react-native-toast-message';
 
 import Heading from '@/ui/components/Heading';
+import ScreenWrapper from '@/ui/components/ScreenWrapper';
 import Text from '@/ui/components/Text';
 import TouchableOpacityButton from '@/ui/components/TouchableOpacityButton';
 import TextInput from '@/ui/components/input/TextInput';
 import getColor from '@/ui/utils/getColor';
+import { handleApiError } from '@/ui/utils/toastNotifications';
 
 export default function SignInScreen() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -21,60 +22,44 @@ export default function SignInScreen() {
   const [password, setPassword] = React.useState('');
 
   useEffect(() => {
-    if (!isLoaded || !session) return;
+    if (!isLoaded || !session) {
+      return;
+    }
 
     (async () => {
-      const token = await session.getToken();
-      console.log('Token:', token);
-
-      router.replace('/profile');
+      router.replace('/(tabs)/profile');
     })();
   }, [isLoaded, router, session]);
 
-  // Handle the submission of the sign-in form
   const onSignInPress = async () => {
     if (!isLoaded) return;
 
     setPending(true);
 
-    // Start the sign-in process using the email and password provided
     try {
       const signInAttempt = await signIn.create({
         identifier: emailAddress,
         password,
       });
 
-      // If sign-in process is complete, set the created session as active
-      // and redirect the user
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
-
-      if (isClerkRuntimeError(err) && err.code === 'network_error') {
-        console.error('Network error occurred!');
-        Toast.show({
-          type: 'error',
-          text1: 'Błąd sieci',
-          text2: err.message ?? 'Sprawdź połączenie z internetem',
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Nie można zalogować',
-          text2: (err as Error).message ?? 'Sprawdź poprawność danych logowania',
-        });
-      }
+      handleApiError(err, {
+        context: 'logowania',
+        defaultErrorTitle: 'Nie można zalogować',
+        defaultErrorMessage: 'Sprawdź poprawność danych logowania lub spróbuj ponownie później.',
+      });
     } finally {
       setPending(false);
     }
   };
 
   return (
-    <View style={styles.wrapper}>
+    <ScreenWrapper contentContainerStyle={styles.contentContainer}>
       <Heading text="Zaloguj się" />
       <TextInput
         autoCapitalize="none"
@@ -100,22 +85,20 @@ export default function SignInScreen() {
       />
       <View style={styles.newAccount}>
         <Text>Nie masz jeszcze konta?</Text>
-        <Link href="/sign-up">
+        <Link href="/(tabs)/sign-up">
           <Text style={styles.link}>Zarejestruj się</Text>
         </Link>
       </View>
       <View style={styles.clerkInfo}>
         <Text>Bezpieczne logowanie i rejestracja z systemem Clerk.</Text>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: getColor('background'),
-    flex: 1,
-    padding: 20,
+  contentContainer: {
+    justifyContent: 'center',
   },
   link: {
     color: getColor('primary'),

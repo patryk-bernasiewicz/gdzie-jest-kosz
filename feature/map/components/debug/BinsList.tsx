@@ -48,8 +48,8 @@ function BinsList({ bins }: BinsListProps) {
 const styles = StyleSheet.create({
   binList: {
     position: 'absolute',
-    top: 110,
-    left: 10,
+    top: 100,
+    left: 5,
     backgroundColor: getColor('background'),
     fontSize: 9,
     padding: 4,

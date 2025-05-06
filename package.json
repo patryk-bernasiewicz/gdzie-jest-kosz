@@ -1,6 +1,6 @@
 {
   "name": "gdzie-jest-kosz",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "version": "DEV-0.0.1",
   "scripts": {
     "start": "expo start",
@@ -59,8 +59,7 @@
     "react-native-screens": "~4.10.0",
     "react-native-toast-message": "^2.2.1",
     "react-native-webview": "13.13.5",
-    "zustand": "^5.0.4",
-    "undefined": "react-native/assets-registry"
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -4,20 +4,6 @@ import useLocation from '@/feature/map/hooks/useLocation';
 import TouchableOpacityButton from '@/ui/components/TouchableOpacityButton';
 import getColor from '@/ui/utils/getColor';
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    bottom: 100,
-    right: 20,
-    zIndex: 1,
-    backgroundColor: getColor('background'),
-  },
-  rowCenter: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-});
-
 export default function OffsetControls() {
   const { moveOffsetSouth, moveOffsetNorth, moveOffsetEast, moveOffsetWest, resetOffset } =
     useLocation();
@@ -38,3 +24,17 @@ export default function OffsetControls() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    zIndex: 1,
+    backgroundColor: getColor('background'),
+  },
+  rowCenter: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+});

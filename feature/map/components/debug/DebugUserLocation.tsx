@@ -9,7 +9,7 @@ export default function DebugUserLocation() {
 
   return (
     <View style={styles.position}>
-      <Text>
+      <Text style={styles.text}>
         Current position:{'\n'}
         {location ? `${location?.[0]}\n${location?.[1]}` : 'unknown'}
         {'\n'}
@@ -21,8 +21,8 @@ export default function DebugUserLocation() {
 const styles = StyleSheet.create({
   position: {
     position: 'absolute',
-    bottom: 120,
-    left: 20,
+    bottom: 10,
+    left: 5,
     zIndex: 1,
     backgroundColor: getColor('background'),
     borderWidth: 1,
@@ -30,5 +30,10 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     padding: 10,
     borderRadius: 5,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+  },
+  text: {
+    fontSize: 14,
   },
 });

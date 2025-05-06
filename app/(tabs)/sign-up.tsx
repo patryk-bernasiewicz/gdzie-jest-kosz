@@ -5,13 +5,14 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
+import { errorTranslations } from '@/feature/auth/constants/errorTranslations';
 import Heading from '@/ui/components/Heading';
+import ScreenWrapper from '@/ui/components/ScreenWrapper';
 import Text from '@/ui/components/Text';
 import TouchableOpacityButton from '@/ui/components/TouchableOpacityButton';
 import TextInput from '@/ui/components/input/TextInput';
 import getColor from '@/ui/utils/getColor';
-
-import { errorTranslations } from '../constants/errorTranslations';
+import { handleApiError } from '@/ui/utils/toastNotifications';
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -34,38 +35,22 @@ export default function SignUpScreen() {
 
     (async () => {
       const token = await session.getToken();
-
       console.log('Token:', token);
-
-      router.replace('/profile');
+      router.replace('/(tabs)/profile');
     })();
   }, [isLoaded, session, router]);
 
-  // Handle submission of sign-up form
   const onSignUpPress = async () => {
     if (!isLoaded) return;
-
     setPending(true);
-
-    // Start sign-up process using email and password provided
     try {
       await signUp.create({
         emailAddress,
         password,
-        legalAccepted,
       });
-
-      // Send user an email with verification code
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
-
-      // Set 'pendingVerification' to true to display second form
-      // and capture OTP code
       setPendingVerification(true);
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-
       if (isClerkAPIResponseError(err)) {
         const emailError = err.errors.find(({ meta }) => meta?.paramName === 'email_address');
         const emailErrorText =
@@ -73,14 +58,16 @@ export default function SignUpScreen() {
         const passwordError = err.errors.find(({ meta }) => meta?.paramName === 'password');
         const passwordErrorText =
           errorTranslations[passwordError?.code || ''] || passwordError?.message || null;
-        const legalError = err.errors.find(({ meta }) => meta?.paramName === 'legal_accepted');
-        const legalErrorText =
-          errorTranslations[legalError?.code || ''] || legalError?.message || null;
-
         setErrors({
           email_address: emailErrorText,
           password: passwordErrorText,
-          consent_given: legalErrorText,
+          consent_given: null,
+        });
+      } else {
+        handleApiError(err, {
+          context: 'rejestracji',
+          defaultErrorTitle: 'Błąd podczas tworzenia konta',
+          defaultErrorMessage: 'Wystąpił nieoczekiwany problem. Spróbuj ponownie.',
         });
       }
     } finally {
@@ -88,38 +75,36 @@ export default function SignUpScreen() {
     }
   };
 
-  // Handle submission of verification form
   const onVerifyPress = async () => {
     if (!isLoaded) return;
-
     setPending(true);
-
     try {
-      // Use the code the user provided to attempt verification
       const signUpAttempt = await signUp.attemptEmailAddressVerification({
         code,
       });
-
-      // If verification was completed, set the session to active
-      // and redirect the user
       if (signUpAttempt.status === 'complete') {
         await setActive({ session: signUpAttempt.createdSessionId });
       } else {
-        // If the status is not complete, check why. User may need to
-        // complete further steps.
-        console.error(JSON.stringify(signUpAttempt, null, 2));
+        console.error('[Verification Error]', JSON.stringify(signUpAttempt, null, 2));
+        handleApiError(new Error('Weryfikacja nie powiodła się. Status: ' + signUpAttempt.status), {
+          context: 'weryfikacji e-mail',
+          defaultErrorTitle: 'Błąd weryfikacji',
+        });
       }
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      handleApiError(err, {
+        context: 'weryfikacji e-mail',
+        defaultErrorTitle: 'Błąd podczas weryfikacji kodu',
+        defaultErrorMessage: 'Wystąpił nieoczekiwany problem. Spróbuj ponownie.',
+      });
     } finally {
       setPending(false);
     }
   };
+
   if (pendingVerification) {
     return (
-      <>
+      <ScreenWrapper contentContainerStyle={styles.contentContainerVerification}>
         <Heading text="Zweryfikuj adres e-mail" />
         <Text style={styles.verificationText}>
           Wprowadź kod potwierdzający, który został wysłany na podany adres e-mail.
@@ -130,7 +115,6 @@ export default function SignUpScreen() {
           onChangeText={(code) => setCode(code)}
           disabled={isPending}
         />
-        <Text>Akceptuję regulamin i politykę prywatności</Text>
         <TouchableOpacityButton
           variant="primary"
           text="Zweryfikuj"
@@ -140,12 +124,12 @@ export default function SignUpScreen() {
         <View style={styles.securityNotice}>
           <Text>Bezpieczne logowanie i rejestracja z systemem Clerk.</Text>
         </View>
-      </>
+      </ScreenWrapper>
     );
   }
 
   return (
-    <View style={styles.wrapper}>
+    <ScreenWrapper contentContainerStyle={styles.contentContainer}>
       <Heading text="Utwórz konto" />
       <TextInput
         autoCapitalize="none"
@@ -164,7 +148,6 @@ export default function SignUpScreen() {
         label="Hasło"
         error={errors?.password}
         disabled={isPending}
-        className="mr-2"
       />
       <BouncyCheckbox
         isChecked={legalAccepted}
@@ -180,37 +163,34 @@ export default function SignUpScreen() {
         onPress={onSignUpPress}
         text="Kontynuuj"
         disabled={isPending}
-      />{' '}
+      />
       <View style={styles.loginPromptContainer}>
         <Text>Czy masz już konto?</Text>
-        <Link href="/sign-in">
+        <Link href="/(tabs)/sign-in">
           <Text style={styles.link}>Zaloguj się</Text>
         </Link>
       </View>
       <View style={styles.privacyLink}>
-        <Link href="/privacy-policy">
+        <Link href="/(tabs)/privacy-policy">
           <Text style={styles.link}>Polityka prywatności</Text>
         </Link>
       </View>
       <View style={styles.securityNotice}>
         <Text>Bezpieczne logowanie i rejestracja z systemem Clerk.</Text>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: getColor('background'),
-    flex: 1,
-    padding: 20,
+  contentContainer: {
+    justifyContent: 'center',
   },
-  link: {
-    color: getColor('primary'),
-    fontWeight: 600,
+  contentContainerVerification: {
+    justifyContent: 'center',
   },
   verificationText: {
-    marginBottom: 10,
+    marginBottom: 20,
   },
   securityNotice: {
     marginTop: 10,
@@ -232,5 +212,9 @@ const styles = StyleSheet.create({
   },
   privacyLink: {
     marginTop: 10,
+  },
+  link: {
+    color: getColor('primary'),
+    fontWeight: 600,
   },
 });
