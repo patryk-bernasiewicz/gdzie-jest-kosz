@@ -13,13 +13,11 @@ jest.mock('../../../map/hooks/useLocation', () => ({
   default: jest.fn(),
 }));
 
-// Mock api (Axios instance)
-jest.mock('@/utils/api', () => ({
-  __esModule: true,
-  default: {
-    get: jest.fn(),
-  },
-}));
+// Mock the entire api module (axios instance)
+jest.mock('@/utils/api');
+
+// Cast the imported api to its mocked type for type safety in tests
+const mockedApi = api as jest.Mocked<typeof api>;
 
 // Helper to mock useLocation's new return type
 function mockUseLocation({
@@ -52,10 +50,12 @@ function mockUseLocation({
 
 describe('useBins', () => {
   let queryClient: QueryClient;
-  let wrapper: ({ children }: { children: ReactNode }) => JSX.Element;
+  let wrapper: ({ children }: { children: ReactNode }) => React.ReactElement;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedApi.get.mockReset();
+
     queryClient = new QueryClient({
       defaultOptions: {
         queries: {
@@ -86,12 +86,13 @@ describe('useBins', () => {
 
     expect(result.current.data).toBeUndefined();
     expect(result.current.isFetching).toBe(false);
+    expect(mockedApi.get).not.toHaveBeenCalled();
   });
 
   it('fetches bins if location is available', async () => {
     mockUseLocation({ location: [52.1, 21.0] });
 
-    (api.get as jest.Mock).mockResolvedValueOnce({
+    mockedApi.get.mockResolvedValueOnce({
       data: [{ id: 1, latitude: 52.1, longitude: 21.0 }],
     });
 
@@ -100,7 +101,7 @@ describe('useBins', () => {
     await waitFor(() => {
       expect(result.current.data).toEqual([{ id: 1, latitude: 52.1, longitude: 21.0 }]);
     });
-    expect(api.get).toHaveBeenCalledWith(
+    expect(mockedApi.get).toHaveBeenCalledWith(
       expect.stringContaining(`/bins/?latitude=52.1&longitude=21`)
     );
   });
@@ -108,7 +109,7 @@ describe('useBins', () => {
   it('handles fetch errors gracefully', async () => {
     mockUseLocation({ location: [52.1, 21.0] });
 
-    (api.get as jest.Mock).mockRejectedValueOnce(new Error('Network response was not ok'));
+    mockedApi.get.mockRejectedValueOnce(new Error('Network response was not ok'));
 
     const { result } = renderHook(() => useBins(), { wrapper });
 
@@ -116,7 +117,7 @@ describe('useBins', () => {
       () => {
         expect(result.current.isError).toBe(true);
         expect(result.current.error).toBeInstanceOf(Error);
-        expect(result.current.error?.message).toBe('Network response was not ok');
+        expect((result.current.error as Error).message).toBe('Network response was not ok');
       },
       { timeout: 5000 }
     );
@@ -129,6 +130,7 @@ describe('useBins', () => {
 
     expect(result.current.data).toBeUndefined();
     expect(result.current.isFetching).toBe(false);
+    expect(mockedApi.get).not.toHaveBeenCalled();
   });
 
   it('returns isLoading from useLocation', () => {

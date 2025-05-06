@@ -1,4 +1,4 @@
-import { isClerkRuntimeError, useSession, useSignIn } from '@clerk/clerk-expo';
+import { useSession, useSignIn } from '@clerk/clerk-expo';
 import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';

@@ -14,7 +14,7 @@ A mobile app that allows users to track their location in real-time using Leafle
 - TypeScript
 - Leaflet (maps)
 - Clerk (authentication)
-- Jotai (state management)
+- Zustand (state management)
 - React Query (@tanstack/react-query)
 - Testing Library for React Native
 
@@ -55,7 +55,7 @@ After installing the dependencies, use `npm run test` to run the test suites.
 ## Features
 
 - Real-time location tracking
-- Real-time trash bin tracking in the user’s area
+- Real-time trash bin tracking in the user's area
 - User authentication with Clerk
 - Map integration using Leaflet and OpenStreetMap
 - Context menu for submitting new bin locations

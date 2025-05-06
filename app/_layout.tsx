@@ -6,8 +6,10 @@ import { Slot, useRouter, useSegments } from 'expo-router';
 import React, { useEffect } from 'react';
 
 // TODO: Verify if this is still relevant and necessary.
+// eslint-disable-next-line no-undef
 if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
   // @ts-ignore
+  // eslint-disable-next-line no-undef
   window.navigator.onLine = true;
 }
 

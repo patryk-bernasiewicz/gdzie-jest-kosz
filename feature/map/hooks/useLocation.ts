@@ -17,8 +17,8 @@ type LocationOffsetStore = {
   resetOffset: () => void;
 };
 
-const useLocationOffsetStore = create<LocationOffsetStore>((set) => ({
-  location: [0, 0],
+export const useLocationOffsetStore = create<LocationOffsetStore>((set) => ({
+  location: null,
   setLocation: (location: [number, number]) => set({ location }),
   offset: [0, 0],
   moveSouth: () => set((state) => ({ offset: [state.offset[0] - offsetMove, state.offset[1]] })),

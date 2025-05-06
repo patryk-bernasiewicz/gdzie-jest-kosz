@@ -1,9 +1,10 @@
+import type { ReactNode } from 'react';
 import { ScrollView, ScrollViewProps, StyleSheet, ViewStyle } from 'react-native';
 
 import getColor from '@/ui/utils/getColor';
 
 interface ScreenWrapperProps extends ScrollViewProps {
-  children: React.ReactNode;
+  children: ReactNode;
   style?: ViewStyle; // Allow additional styles to be passed
 }
 

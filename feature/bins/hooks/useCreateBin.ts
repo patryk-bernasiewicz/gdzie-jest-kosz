@@ -19,7 +19,7 @@ export default function useCreateBin() {
           longitude,
         });
 
-        queryClient.invalidateQueries({ queryKey: ['bins'] });
+        await queryClient.invalidateQueries({ queryKey: ['bins'] });
         Toast.show({
           type: 'success',
           text1: 'Kosz został dodany',
