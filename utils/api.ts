@@ -1,12 +1,10 @@
 import axios from 'axios';
 
 import { fetchAndSetClerkToken } from '@/feature/auth/store/clerkToken.util';
-
-const baseUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
-const prefix = process.env.EXPO_PUBLIC_BACKEND_API_PREFIX;
+import { getApiBaseUrl } from './getApiBaseUrl';
 
 const api = axios.create({
-  baseURL: `${baseUrl}/${prefix}`,
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
