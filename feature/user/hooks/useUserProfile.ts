@@ -2,6 +2,7 @@ import { useUser } from '@clerk/clerk-expo';
 import { UseQueryOptions, UseQueryResult, useQuery } from '@tanstack/react-query';
 
 import api from '@/utils/api';
+import { serializeAxiosError } from '@/utils/serializeAxiosError';
 
 import { User } from '../types';
 
@@ -17,7 +18,7 @@ export default function useUserProfile(
         const response = await api.get('/user/me');
         return response.data;
       } catch (error) {
-        console.error('Error fetching user profile:', error);
+        console.error('Error fetching user profile:', JSON.stringify(serializeAxiosError(error), null, 2));
         throw error;
       }
     },

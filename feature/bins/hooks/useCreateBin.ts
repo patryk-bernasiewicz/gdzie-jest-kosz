@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
 import api from '@/utils/api';
+import { serializeAxiosError } from '@/utils/serializeAxiosError';
 
 import { Bin } from '../types';
 
@@ -28,7 +29,7 @@ export default function useCreateBin() {
 
         return res.data;
       } catch (error) {
-        console.error('Error creating bin:', error);
+        console.error('Error creating bin:', JSON.stringify(serializeAxiosError(error), null, 2));
         throw error;
       }
     },
