@@ -44,9 +44,24 @@ utils/              # App-wide utility functions (api, calculateDistance, etc.)
 
 1. Clone the repository.
 2. Run npm install.
-3. Set up your .env file with the required environment variables (see `.env.example`).
+3. Set up your .env file with the required environment variables (see below).
 4. Start the backend project (see [the backend](https://github.com/patryk-bernasiewicz/gdzie-jest-kosz-backend) repo).
 5. Run the app with `npx expo start`.
+
+## Environment Variables
+
+The app requires the following environment variables for backend API configuration:
+
+- `EXPO_PUBLIC_BACKEND_URL` — The base URL of your backend (e.g., `http://192.168.0.1:3220`)
+- `EXPO_PUBLIC_BACKEND_API_PREFIX` — The API prefix (e.g., `api/v1`)
+
+These are automatically joined and normalized by the app. Both must be set, or the app will throw a clear error on startup.
+
+Example `.env`:
+```
+EXPO_PUBLIC_BACKEND_URL=http://192.168.0.55:3220
+EXPO_PUBLIC_BACKEND_API_PREFIX=api/v1
+```
 
 ## Testing
 
@@ -60,3 +75,11 @@ After installing the dependencies, use `npm run test` to run the test suites.
 - Map integration using Leaflet and OpenStreetMap
 - Context menu for submitting new bin locations
 - Admin features (e.g., marking bins as invalid)
+
+## Error Handling
+
+All API errors are logged in a detailed, consistent format using a custom utility. This makes debugging network and backend issues much easier. If you add new API queries or mutations, use the `serializeAxiosError` utility from `utils/serializeAxiosError.ts` for consistent error reporting.
+
+## Code Formatting
+
+This project uses Prettier with a print width of 80. Please ensure your editor is configured accordingly to avoid unnecessary diffs.
