@@ -86,7 +86,7 @@ describe('useCreateBin hook', () => {
     });
 
     it('throws error and logs when post fails', async () => {
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
       (api.post as jest.Mock).mockRejectedValue(new Error('Network response was not ok'));
       const { result } = renderHook(() => useCreateBin(), { wrapper });
 
@@ -97,12 +97,15 @@ describe('useCreateBin hook', () => {
       await waitFor(() => {
         expect(Toast.show).not.toHaveBeenCalled();
       });
-      expect(errorSpy).toHaveBeenCalledWith('Error creating bin:', expect.any(Error));
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Error creating bin:',
+        expect.stringContaining('Network response was not ok')
+      );
       errorSpy.mockRestore();
     });
 
     it('throws and logs error on post exception', async () => {
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
       (api.post as jest.Mock).mockRejectedValue(new Error('fetch failed'));
       const { result } = renderHook(() => useCreateBin(), { wrapper });
 
@@ -111,7 +114,10 @@ describe('useCreateBin hook', () => {
       await waitFor(() => {
         expect(Toast.show).not.toHaveBeenCalled();
       });
-      expect(errorSpy).toHaveBeenCalledWith('Error creating bin:', expect.any(Error));
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Error creating bin:',
+        expect.stringContaining('fetch failed')
+      );
       errorSpy.mockRestore();
     });
 
