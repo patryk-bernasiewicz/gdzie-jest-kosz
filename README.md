@@ -59,8 +59,10 @@ These are automatically joined and normalized by the app. Both must be set, or t
 
 Example `.env`:
 ```
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=key_here
 EXPO_PUBLIC_BACKEND_URL=http://192.168.0.55:3220
 EXPO_PUBLIC_BACKEND_API_PREFIX=api/v1
+EXPO_PUBLIC_DEV_MODE=true
 ```
 
 ## Testing
