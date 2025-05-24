@@ -50,6 +50,8 @@ _(Section to be completed when a backend database and migration system are intro
 - **Feature-based Structure**: The code is modular, facilitating development and testing.
 - **Global State Management**: Zustand is used for managing global client-side state.
 - **TypeScript**: Usage of types to enhance code safety and quality.
+- **Efficient Bin Fetching**: The app only refetches bins from the backend if the user moves more than 200 meters from the last fetched location. This is determined using a shared calculateDistance utility, reducing unnecessary API calls and improving performance.
+- **Bin Marker Management**: All bin markers are kept in memory and on the map for the duration of the app session. Since the expected number of bins per user is well below 100 (even in dense urban areas), this is safe for device memory and performance. This approach avoids bugs related to marker deletion and ensures a smooth, consistent user experience.
 
 ## 7. Coding Conventions
 
